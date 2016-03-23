@@ -1,7 +1,7 @@
 #+TITLE: ASM Interpret
 
 -- A small Assembly (ish) DSL for the purpose of teaching new coders differences
-   between high and low languages
+between high and low languages
 * Design
 The design is broken into multiple pieces for consistency and compatibility
 reasons.

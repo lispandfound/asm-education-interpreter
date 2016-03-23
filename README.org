@@ -1,0 +1,96 @@
+#+TITLE: ASM Interpret
+
+-- A small Assembly (ish) DSL for the purpose of teaching new coders differences
+   between high and low languages
+* Design
+The design is broken into multiple pieces for consistency and compatibility
+reasons.
+** Directory Tree
+#+BEGIN_QUOTE
+.
+├── CMakeCache.txt
+├── CMakeFiles
+│   ├── 3.5.0
+│   │   ├── CMakeCCompiler.cmake
+│   │   ├── CMakeCXXCompiler.cmake
+│   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   ├── CMakeSystem.cmake
+│   │   ├── CompilerIdC
+│   │   │   ├── a.out
+│   │   │   └── CMakeCCompilerId.c
+│   │   └── CompilerIdCXX
+│   │       ├── a.out
+│   │       └── CMakeCXXCompilerId.cpp
+│   ├── cmake.check_cache
+│   ├── CMakeDirectoryInformation.cmake
+│   ├── CMakeOutput.log
+│   ├── CMakeTmp
+│   ├── feature_tests.bin
+│   ├── feature_tests.c
+│   ├── feature_tests.cxx
+│   ├── libasminterpreter.dir
+│   │   ├── build.make
+│   │   ├── C.includecache
+│   │   ├── cmake_clean.cmake
+│   │   ├── cmake_clean_target.cmake
+│   │   ├── DependInfo.cmake
+│   │   ├── depend.internal
+│   │   ├── depend.make
+│   │   ├── flags.make
+│   │   ├── link.txt
+│   │   ├── progress.make
+│   │   └── test.c.o
+│   ├── Makefile2
+│   ├── Makefile.cmake
+│   ├── progress.marks
+│   └── TargetDirectories.txt
+├── cmake_install.cmake
+├── CMakeLists.txt
+├── liblibasminterpreter.a
+├── Makefile
+└── test.c
+
+#+END_QUOTE
+- Essentially there is one library (the lib folder) called libasminterpreter, which backends all the
+  logic, and is strictly cross platform. Code here is expected to be much higher
+  quality than usual (in order to ensure no platform quirks). The kind of logic
+  expected here would be the binary interpreter, abstracted os related code
+  (wrapped in ifdefs of course), and macros/functions for the internals of the
+  asm-like language on a whole.
+- The other component to the puzzle is the os related presentation code. This
+  code acts as a front end to the UI and other related components (such as file
+  IO etc).
+** The Assembly Itself
+The assembly DSL differs greatly from the real assembly (things like nasm,
+etc.), in that it is entirely written in binary. Each instruction in this
+language, for simplicity's sake on my part, is 16 bits long. This was chosen to
+leave plenty of room for maneuvering and flexibility in function arguments. An
+example instruction might look like:
+#+BEGIN_QUOTE
+0001 0010 0001 0000
+#+END_QUOTE
+In this case, an ADD instruction was called, adding register 2 to register 1
+storing the result with register 1. Notice that the user is required to pad the
+instruction up to 16 bits.
+
+This assembly isn't complex, there aren't many obscurities. Users do not need to
+know if they are developing for x86_64 architecture or whether memory is
+available. This is for a few reasons, firstly because the students may or not be
+able to grasp memory management concepts, and because these sort of things
+aren't required to show properly the verbose nature of machine code and
+assembly. The purpose of this program isn't to make people whizzes at assembly,
+rather encourage learning of binary numbers and show that low level languages
+are highly verbose and take large swaths of code to achieve simple tasks.
+
+*** Table of Op Codes
+| Code | Arguments    | Binary | Explanation                                                        |
+|------+--------------+--------+--------------------------------------------------------------------|
+| ADD  | REG1, REG2   |   0001 | Add the contents of REG2 to REG1, storing the result in REG1       |
+| MUL  | REG1, REG2   |   0010 | Multiply the contents of REG2 and REG1, storing the result in REG1 |
+| DIV  | REG1, REG2   |   0011 | Divide REG1 by REG2, and store the result in REG1                  |
+| SUB  | REG1, REG2   |   0100 | Subtract REG2 from REG1, storing the result in REG1                |
+| LD   | REG1, MEMLOC |   0101 | Load Memloc (fake location in memory) into REG1                    |
+| SAV  | REG1, MEMLOC |   0110 | Save REG1 to MEMLOC                                                |
+| P    | REG1         |   0111 | Print the contents of REG1                                         |
+| STO  | REG1, VAL    |   1000 | Store VAL in REG1                                                  |

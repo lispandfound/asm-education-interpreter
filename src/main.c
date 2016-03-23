@@ -1,6 +1,7 @@
+#include "test.h"
 #include <stdio.h>
 int main(int argc, char *argv[])
 {
-  printf("Hello World" );
+  test_func();
   return 0;
 }

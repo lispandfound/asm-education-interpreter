@@ -86,11 +86,12 @@ are highly verbose and take large swaths of code to achieve simple tasks.
 *** Table of Op Codes
 | Code | Arguments    | Binary | Explanation                                                        |
 |------+--------------+--------+--------------------------------------------------------------------|
-| ADD  | REG1, REG2   |   0001 | Add the contents of REG2 to REG1, storing the result in REG1       |
-| MUL  | REG1, REG2   |   0010 | Multiply the contents of REG2 and REG1, storing the result in REG1 |
-| DIV  | REG1, REG2   |   0011 | Divide REG1 by REG2, and store the result in REG1                  |
-| SUB  | REG1, REG2   |   0100 | Subtract REG2 from REG1, storing the result in REG1                |
-| LD   | REG1, MEMLOC |   0101 | Load Memloc (fake location in memory) into REG1                    |
-| SAV  | REG1, MEMLOC |   0110 | Save REG1 to MEMLOC                                                |
-| P    | REG1         |   0111 | Print the contents of REG1                                         |
-| STO  | REG1, VAL    |   1000 | Store VAL in REG1                                                  |
+| ADD  | REG1, REG2   |   0000 | Add the contents of REG2 to REG1, storing the result in REG1       |
+| MUL  | REG1, REG2   |   0001 | Multiply the contents of REG2 and REG1, storing the result in REG1 |
+| DIV  | REG1, REG2   |   0010 | Divide REG1 by REG2, and store the result in REG1                  |
+| SUB  | REG1, REG2   |   0011 | Subtract REG2 from REG1, storing the result in REG1                |
+| LD   | REG1, MEMLOC |   0100 | Load Memloc (fake location in memory) into REG1                    |
+| SAV  | REG1, MEMLOC |   0101 | Copy REG1 to MEMLOC                                                |
+| P    | REG1         |   0110 | Print the contents of REG1                                         |
+| STO  | REG1, MEMLOC |   0111 | Store (destructively) REG1 in MEMLOC                               |
+| SET  | REG1, VAL    |   1000 | Set the Value of REG1 to VAL                                       |

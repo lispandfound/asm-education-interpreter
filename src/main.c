@@ -1,5 +1,7 @@
 #if __gnu_linux__
 #include <signal.h>
+#elif __WIN32 || __WIN64
+#include <windows.h>
 #endif
 #include <opcodes.h>
 #include <stdlib.h>
@@ -10,6 +12,13 @@ volatile sig_atomic_t done = 0;
 void term(int signum)
 {
   done = 1;
+}
+#elif __WIN32 || __WIN64
+static volatile bool done = false;
+static BOOL WINAPI console_ctrl_handler(DWORD dwCtrlType)
+{
+  done = true;
+  return TRUE;
 }
 
 #endif
@@ -22,6 +31,9 @@ int main(int argc, char *argv[])
   action.sa_handler = term;
   sigaction(SIGINT, &action, NULL);
   while (!done) {
+#elif __WIN32 || __WIN64
+  SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+  while (!done) {
 #else
    while (1) {
 #endif
@@ -33,7 +45,12 @@ int main(int argc, char *argv[])
     printf("> ");
     scanf("%s %s %s %s", func, car, cadr, caddr);
     reg* res = parse_and_run(func, car, cadr, caddr);
+    #if __gnu_linux__ || __WIN32 || __WIN64
+    if (!done)
+      puts(res->debug);
+    #else
     puts(res->debug);
+    #endif
     free(func);
     free(car);
     free(cadr);

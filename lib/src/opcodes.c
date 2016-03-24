@@ -1,5 +1,6 @@
 #include "opcodes.h"
 reg* (*FUNC_TABLE[8])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto}; // Function table
+reg* (*FUNC_TABLE[9])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto, set}; // Function table
 OPCODE_FUNC(set) {
   reg* to = REGISTERTABLE[car];
   to->val = cadr;

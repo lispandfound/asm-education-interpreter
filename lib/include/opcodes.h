@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 typedef enum {ADD, MUL, DIV, SUB, LD, SAV, P, STO} OPCODE;
+typedef enum {ADD, MUL, DIV, SUB, LD, SAV, P, STO, SET} OPCODE;
 // Memory table, is just a list of integers
 // Register struct, a wrap around an int with a debug message for the results of the last instruction
 #define OPCODE_FUNC(NAME) reg* NAME(int car, int cadr, int caddr)
@@ -23,6 +24,7 @@ OPCODE_FUNC(ld);
 OPCODE_FUNC(sav);
 OPCODE_FUNC(p);
 OPCODE_FUNC(sto);
+OPCODE_FUNC(set);
 reg* new_register();
 void init_asm_interpreter();
 void free_asm_interpreter();

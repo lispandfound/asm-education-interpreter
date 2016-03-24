@@ -1,5 +1,6 @@
 project(asm_interpreter)
 include_directories(../lib)
-set(CMAKE_C_FLAGS "-Wall")
+include_directories(../lib/include)
+set(CMAKE_C_FLAGS "-Wall -g")
 add_executable(asm_interpreter main.c)
-target_link_libraries(asm_interpreter libasminterpreter)
+target_link_libraries(asm_interpreter asminterpreter)

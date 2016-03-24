@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-typedef enum {ADD, MUL, DIV, SUB, LD, SAV, P, STO} OPCODE;
+#include <math.h>
 typedef enum {ADD, MUL, DIV, SUB, LD, SAV, P, STO, SET} OPCODE;
 // Memory table, is just a list of integers
 // Register struct, a wrap around an int with a debug message for the results of the last instruction
@@ -28,5 +28,8 @@ OPCODE_FUNC(set);
 reg* new_register();
 void init_asm_interpreter();
 void free_asm_interpreter();
+int ctoi(char c);
+int parse_binary(char* binary);
+reg* parse_and_run(char* func, char* car, char* cadr, char* caddr);
 /* FUNC_TABLE functions are callable like (*FUNC_TABLE[0])(reg1, reg2)  for adding one register to another */
 #endif /* OPCODES_H */

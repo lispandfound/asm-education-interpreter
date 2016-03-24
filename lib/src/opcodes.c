@@ -1,5 +1,4 @@
 #include "opcodes.h"
-reg* (*FUNC_TABLE[8])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto}; // Function table
 reg* (*FUNC_TABLE[9])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto, set}; // Function table
 OPCODE_FUNC(set) {
   reg* to = REGISTERTABLE[car];
@@ -86,5 +85,31 @@ void free_asm_interpreter() {
   for (int i = 0; i < MEMTABLE_SIZE; i++) {
     free(MEMTABLE[i]);
   }
+}
+int ctoi(char c) {
+  if ('0' <= c &&  c <= '9') {
+    return c - '0';
+  } else {
+    exit(EXIT_FAILURE);
+  }
+}
+int parse_binary(char* binary) {
+  int power = strlen(binary) - 1;
+  int ret = 0;
+  for (char *p = binary; *p != '\0'; p++) {
+    if (ctoi(*p)) {
+      ret += pow(2, power);
+    }
+    power--;
+  }
+  return ret;
+}
+reg* parse_and_run(char* func, char* car, char* cadr, char* caddr) {
+  int function, c, cd, cdd;
+  function = parse_binary(func);
+  c = parse_binary(car);
+  cd = parse_binary(cadr);
+  cdd = parse_binary(caddr);
+  return (*FUNC_TABLE[function])(c, cd, cdd);
 }
 // TODO maybe function pointer table instead of these opcodes

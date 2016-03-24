@@ -1,18 +1,83 @@
 #include "opcodes.h"
-// Op codes for DSL
-typedef enum {ADD, MUL, DIV, SUB, LD, SAV, P, STO} OPCODE;
-// Memory table, is just a list of integers
-int MEMTABLE[64];
-// Register struct, a wrap around an int with a debug message for the results of the last instruction
-typedef struct reg {
-  int val;
-  char* debug; // for printing the interpreted results
-}reg;
-reg REGISTERTABLE[2]; // the two registers
-// forgive my lisp
-// this macro defines an opcode function for consistency reasons
+reg* (*FUNC_TABLE[8])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto}; // Function table
 OPCODE_FUNC(add) {
-  printf("%i", car);
+  reg* to = REGISTERTABLE[car];
+  reg* from = REGISTERTABLE[cadr];
+  to->val += from->val;
+  sprintf(to->debug, "-> divided two registers");
+  return to;
 }
-const OPCODE_FUNC_PTR(FUNC_TABLE) = {add, mul, div, sub, ld, sav, p, sto};
+OPCODE_FUNC(sub) {
+  reg* to = REGISTERTABLE[car];
+  reg* from = REGISTERTABLE[cadr];
+  to->val -= from->val;
+  sprintf(to->debug, "-> divided two registers");
+  return to;
+}
+OPCODE_FUNC(mul) {
+  reg* to = REGISTERTABLE[car];
+  reg* from = REGISTERTABLE[cadr];
+  to->val *= from->val;
+  sprintf(to->debug, "-> divided two registers");
+  return to;
+}
+OPCODE_FUNC(divide) {
+  reg* to = REGISTERTABLE[car];
+  reg* from = REGISTERTABLE[cadr];
+  to->val /= from->val;
+  sprintf(to->debug, "-> divided two registers");
+  return to;
+}
+
+OPCODE_FUNC(ld) {
+  reg* to = REGISTERTABLE[car];
+  to = memmove(to, MEMTABLE[cadr], sizeof(reg));
+  sprintf(to->debug, "-> divided two registers");
+  return to;
+}
+
+OPCODE_FUNC(sav) {
+  reg* from = REGISTERTABLE[car];
+  reg* to = MEMTABLE[cadr];
+  memcpy(to, from, sizeof(reg));
+  sprintf(from->debug, "-> Saved register");
+  return from;
+}
+
+OPCODE_FUNC(p) {
+  reg* regi = REGISTERTABLE[car];
+  sprintf(regi->debug, "-> %i", regi->val);
+  return regi;
+}
+
+OPCODE_FUNC(sto) {
+  reg* from = REGISTERTABLE[car];
+  reg* to = MEMTABLE[cadr];
+  memcpy(to, from, sizeof(reg));
+  memset(from, 0, sizeof(reg));
+  sprintf(from->debug, "-> Stored register");
+  from->val = 0;
+  return from;
+}
+reg* new_register() {
+  reg* ptr = malloc(sizeof(reg));
+  ptr->val = 0;
+  return ptr;
+}
+void init_asm_interpreter() {
+  for (int i = 0; i < REGISTERTABLE_SIZE; i++) {
+    REGISTERTABLE[i] = new_register();
+  }
+  for (int i = 0; i < MEMTABLE_SIZE; i++) {
+    MEMTABLE[i] = new_register();
+  }
+}
+void free_asm_interpreter() {
+  for (int i = 0; i < REGISTERTABLE_SIZE; i++) {
+    free(REGISTERTABLE[i]);
+  }
+  for (int i = 0; i < MEMTABLE_SIZE; i++) {
+    free(MEMTABLE[i]);
+  }
+}
 // TODO maybe function pointer table instead of these opcodes

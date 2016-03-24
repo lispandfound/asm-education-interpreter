@@ -1,1 +1,1 @@
-add_library(libasminterpreter STATIC "opcodes.c")
+add_library(asminterpreter STATIC "opcodes.c")

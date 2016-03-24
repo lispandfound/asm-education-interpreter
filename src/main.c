@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
     free(cadr);
     free(caddr);
   }
+  printf("Exiting...");
   free_asm_interpreter();
   return 0;
 }

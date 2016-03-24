@@ -10,6 +10,10 @@ int main(int argc, char *argv[])
     car = malloc(4);
     cadr = malloc(4);
     caddr = malloc(4);
+    func = calloc(4 + 1, sizeof(char));
+    car = calloc(4 + 1, sizeof(char));
+    cadr = calloc(4 + 1, sizeof(char));
+    caddr = calloc(4 + 1, sizeof(char));
     printf("> ");
     scanf("%s %s %s %s", func, car, cadr, caddr);
     reg* res = parse_and_run(func, car, cadr, caddr);

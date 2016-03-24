@@ -1,38 +1,44 @@
 #include "opcodes.h"
 reg* (*FUNC_TABLE[8])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto}; // Function table
+OPCODE_FUNC(set) {
+  reg* to = REGISTERTABLE[car];
+  to->val = cadr;
+  sprintf(to->debug, "-> %i", to->val);
+  return to;
+}
 OPCODE_FUNC(add) {
   reg* to = REGISTERTABLE[car];
   reg* from = REGISTERTABLE[cadr];
   to->val += from->val;
-  sprintf(to->debug, "-> divided two registers");
+  sprintf(to->debug, "-> %i", to->val);
   return to;
 }
 OPCODE_FUNC(sub) {
   reg* to = REGISTERTABLE[car];
   reg* from = REGISTERTABLE[cadr];
   to->val -= from->val;
-  sprintf(to->debug, "-> divided two registers");
+  sprintf(to->debug, "-> %i", to->val);
   return to;
 }
 OPCODE_FUNC(mul) {
   reg* to = REGISTERTABLE[car];
   reg* from = REGISTERTABLE[cadr];
   to->val *= from->val;
-  sprintf(to->debug, "-> divided two registers");
+  sprintf(to->debug, "-> %i", to->val);
   return to;
 }
 OPCODE_FUNC(divide) {
   reg* to = REGISTERTABLE[car];
   reg* from = REGISTERTABLE[cadr];
   to->val /= from->val;
-  sprintf(to->debug, "-> divided two registers");
+  sprintf(to->debug, "-> %i", to->val);
   return to;
 }
 
 OPCODE_FUNC(ld) {
   reg* to = REGISTERTABLE[car];
   to = memmove(to, MEMTABLE[cadr], sizeof(reg));
-  sprintf(to->debug, "-> divided two registers");
+  sprintf(to->debug, "-> SUCCESS");
   return to;
 }
 
@@ -40,7 +46,7 @@ OPCODE_FUNC(sav) {
   reg* from = REGISTERTABLE[car];
   reg* to = MEMTABLE[cadr];
   memcpy(to, from, sizeof(reg));
-  sprintf(from->debug, "-> Saved register");
+  sprintf(from->debug, "-> SUCCESS");
   return from;
 }
 
@@ -55,7 +61,7 @@ OPCODE_FUNC(sto) {
   reg* to = MEMTABLE[cadr];
   memcpy(to, from, sizeof(reg));
   memset(from, 0, sizeof(reg));
-  sprintf(from->debug, "-> Stored register");
+  sprintf(from->debug, "-> SUCCESS");
   from->val = 0;
   return from;
 }

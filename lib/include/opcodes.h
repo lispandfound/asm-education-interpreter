@@ -1,5 +1,6 @@
 #ifndef OPCODES_H
 #define OPCODES_H
+#include <stdint.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,10 +9,10 @@ typedef enum {ADD, MUL, DIV, SUB, LD, SAV, P, STO, SET} OPCODE;
 // Memory table, is just a list of integers
 // Register struct, a wrap around an int with a debug message for the results of the last instruction
 #define OPCODE_FUNC(NAME) reg* NAME(int car, int cadr, int caddr)
-#define MEMTABLE_SIZE 64
+#define MEMTABLE_SIZE 255
 #define REGISTERTABLE_SIZE 2
 typedef struct reg {
-  int val;
+  uint8_t val;
   char debug[64]; // for printing the interpreted results
 }reg;
 reg* MEMTABLE[MEMTABLE_SIZE];
@@ -29,7 +30,7 @@ reg* new_register();
 void init_asm_interpreter();
 void free_asm_interpreter();
 int ctoi(char c);
-int parse_binary(char* binary);
+int parse_binary(char* binary, int factor, int scale);
 reg* parse_and_run(char* func, char* car, char* cadr, char* caddr);
 /* FUNC_TABLE functions are callable like (*FUNC_TABLE[0])(reg1, reg2)  for adding one register to another */
 #endif /* OPCODES_H */

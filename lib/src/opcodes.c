@@ -2,7 +2,7 @@
 reg* (*FUNC_TABLE[9])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto, set}; // Function table
 OPCODE_FUNC(set) {
   reg* to = REGISTERTABLE[car];
-  to->val = cadr;
+  to->val = cadr + caddr;
   sprintf(to->debug, "-> %i", to->val);
   return to;
 }
@@ -93,12 +93,31 @@ int ctoi(char c) {
     exit(EXIT_FAILURE);
   }
 }
-int parse_binary(char* binary) {
+void inplace_reverse(char * str)
+{
+  if (str)
+    {
+      char * end = str + strlen(str) - 1;
+      // walk inwards from both ends of the string,
+      // swapping until we get to the middle
+      while (str < end)
+        {
+          char temp = *str;
+          *str = *end;
+          *end = temp;
+          str++;
+          end--;
+        }
+    }
+}
+int parse_binary(char* binary, int factor, int scale) {
   int power = strlen(binary) - 1;
   int ret = 0;
+  if (scale)
+    inplace_reverse(binary);
   for (char *p = binary; *p != '\0'; p++) {
     if (ctoi(*p)) {
-      ret += pow(2, power);
+      ret += pow(2, (power + factor));
     }
     power--;
   }
@@ -106,10 +125,10 @@ int parse_binary(char* binary) {
 }
 reg* parse_and_run(char* func, char* car, char* cadr, char* caddr) {
   int function, c, cd, cdd;
-  function = parse_binary(func);
-  c = parse_binary(car);
-  cd = parse_binary(cadr);
-  cdd = parse_binary(caddr);
+  function = parse_binary(func, 0, 0);
+  c = parse_binary(car, 0, 0);
+  cd = parse_binary(cadr, function == 8 ? 4 : 0, 0);
+  cdd = parse_binary(caddr, 0, 1);
   return (*FUNC_TABLE[function])(c, cd, cdd);
 }
 // TODO maybe function pointer table instead of these opcodes

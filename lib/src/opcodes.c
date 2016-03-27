@@ -1,4 +1,4 @@
-#include "opcodes.h"
+#include <opcodes.h>
 reg* (*FUNC_TABLE[9])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto, set}; // Function table
 OPCODE_FUNC(set) {
   reg* to = REGISTERTABLE[car];
@@ -128,7 +128,7 @@ reg* parse_and_run(char* func, char* car, char* cadr, char* caddr) {
   function = parse_binary(func, 0, 0);
   c = parse_binary(car, 0, 0);
   cd = parse_binary(cadr, function == 8 ? 4 : 0, 0);
-  cdd = parse_binary(caddr, 0, 1);
+  cdd = parse_binary(caddr, 0, 0);
   return (*FUNC_TABLE[function])(c, cd, cdd);
 }
 // TODO maybe function pointer table instead of these opcodes

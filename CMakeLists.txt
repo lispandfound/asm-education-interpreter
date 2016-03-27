@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
+set(CMAKE_C_FLAGS "-Wall -pedantic -O2")
 include_directories("include")
 add_subdirectory("src")
 add_subdirectory("lib")

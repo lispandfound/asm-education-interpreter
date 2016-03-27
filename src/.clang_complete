@@ -1,3 +1,3 @@
 -I/home/jake/repos/c/asminterpreter/include
--I/home/jake/repos/c/asminterpreter/src/../lib
+-I/home/jake/repos/c/asminterpreter/src/../lib/include
 -Wall

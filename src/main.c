@@ -9,21 +9,16 @@
 /* This is the cross platform cli client to the system */
 #if __gnu_linux__
 volatile sig_atomic_t done = 0;
-void term(int signum)
-{
-  done = 1;
-}
+void term(int signum) {(void)signum; done = 1; }
 #elif __WIN32 || __WIN64
 static volatile bool done = false;
-static BOOL WINAPI console_ctrl_handler(DWORD dwCtrlType)
-{
+static BOOL WINAPI console_ctrl_handler(DWORD dwCtrlType) {
   done = true;
   return TRUE;
 }
 
 #endif
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   init_asm_interpreter();
 #if __gnu_linux__
   struct sigaction action;
@@ -35,7 +30,7 @@ int main(int argc, char *argv[])
   SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
   while (!done) {
 #else
-   while (1) {
+  while (1) {
 #endif
     char *func, *car, *cadr, *caddr;
     func = calloc(4 + 1, sizeof(char));
@@ -44,13 +39,14 @@ int main(int argc, char *argv[])
     caddr = calloc(4 + 1, sizeof(char));
     printf("> ");
     scanf("%s %s %s %s", func, car, cadr, caddr);
-    reg* res = parse_and_run(func, car, cadr, caddr);
-    #if __gnu_linux__ || __WIN32 || __WIN64
+
+    reg *res = parse_and_run(func, car, cadr, caddr);
+#if __gnu_linux__ || __WIN32 || __WIN64
     if (!done)
       puts(res->debug);
-    #else
+#else
     puts(res->debug);
-    #endif
+#endif
     free(func);
     free(car);
     free(cadr);

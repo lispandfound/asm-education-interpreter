@@ -14,6 +14,8 @@ typedef enum {ADD, MUL, DIV, SUB, LD, SAV, P, STO, SET} OPCODE;
 typedef struct reg {
   uint8_t val;
   char debug[64]; // for printing the interpreted results
+  int err;
+  char error[64];
 }reg;
 reg* MEMTABLE[MEMTABLE_SIZE];
 reg* REGISTERTABLE[REGISTERTABLE_SIZE]; // the two registers

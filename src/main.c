@@ -11,9 +11,9 @@
 volatile sig_atomic_t done = 0;
 void term(int signum) {(void)signum; done = 1; }
 #elif __WIN32 || __WIN64
-static volatile bool done = false;
+static volatile int done = 0;
 static BOOL WINAPI console_ctrl_handler(DWORD dwCtrlType) {
-  done = true;
+  done = 1;
   return TRUE;
 }
 

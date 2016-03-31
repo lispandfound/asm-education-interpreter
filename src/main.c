@@ -24,6 +24,7 @@ void maybe_print_error(reg* r) {
   }
 }
 int main(int argc, char *argv[]) {
+  (void)argc;(void)argv;
   init_asm_interpreter();
 #if __gnu_linux__
   struct sigaction action;

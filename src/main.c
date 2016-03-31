@@ -38,8 +38,12 @@ int main(int argc, char *argv[]) {
     cadr = calloc(4 + 1, sizeof(char));
     caddr = calloc(4 + 1, sizeof(char));
     printf("> ");
-    scanf("%s %s %s %s", func, car, cadr, caddr);
-
+    int err = scanf("%4s %4s %4s %4s", func, car, cadr, caddr);
+    if (ferror(stdin) || err < 4) {
+      // Error occurred during scanning
+      fprintf(stderr, "\nASM: Error: Invalid input received\n");
+      continue;
+    }
     reg *res = parse_and_run(func, car, cadr, caddr);
 #if __gnu_linux__ || __WIN32 || __WIN64
     if (!done)

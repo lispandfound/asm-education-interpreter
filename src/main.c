@@ -18,6 +18,11 @@ static BOOL WINAPI console_ctrl_handler(DWORD dwCtrlType) {
 }
 
 #endif
+void maybe_print_error(reg* r) {
+  if (r->err) {
+    fprintf(stderr, "%s", r->error);
+  }
+}
 int main(int argc, char *argv[]) {
   init_asm_interpreter();
 #if __gnu_linux__
@@ -51,6 +56,7 @@ int main(int argc, char *argv[]) {
 #else
     puts(res->debug);
 #endif
+    maybe_print_error(res);
     free(func);
     free(car);
     free(cadr);

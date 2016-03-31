@@ -6,4 +6,4 @@ build_job:
   stage: build
   script:
     - cmake .
-    - make
+    - make VERBOSE=1

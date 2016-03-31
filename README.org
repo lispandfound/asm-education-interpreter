@@ -21,13 +21,23 @@ reasons.
 #+END_EXAMPLE
 - Essentially there is one library (the lib folder) called libasminterpreter, which backends all the
   logic, and is strictly cross platform. Code here is expected to be much higher
-  quality than usual (in order to ensure no platform quirks). The kind of logic
-  expected here would be the binary interpreter, abstracted os related code
-  (wrapped in ifdefs of course), and macros/functions for the internals of the
+  quality than usual (to make it easier to debug). The kind of logic
+  expected here would be the binary interpreter and other macros/functions for the internals of the
   asm-like language on a whole.
 - The other component to the puzzle is the os related presentation code. This
-  code acts as a front end to the UI and other related components (such as file
-  IO etc).
+  code acts as a front end, providing the UI and other related components (such as file
+  IO etc). This is found in the "src" directory.
+- README.org is what you are reading now.
+- main.c is the main file for the UI code, in that it is the fallback if no
+  better options exist when compiling. The means that if you are on a system
+  like Windows, it will compile this file because no GUI code exists for it
+  (yet).
+- asm_interpreter (asm_interpreter.exe for windows systems) is the compiled
+  executable.
+There are a few other files, notably CMakeLists.txt and .clang_complete but
+these can be safely ignored (they don't provide anything code wise, they are
+just for building). Upon building *a ton of files will be created*, ignore these
+too.
 ** The Assembly Itself
 The assembly DSL differs greatly from the real assembly (things like nasm,
 etc.), in that it is entirely written in binary. Each instruction in this

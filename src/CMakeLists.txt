@@ -1,6 +1,6 @@
 project(asm_interpreter)
-set_property(TARGET asm_interpreter PROPERTY C_STANDARD 11)
 include_directories(../lib)
 include_directories(../lib/include)
 add_executable(asm_interpreter main.c)
 target_link_libraries(asm_interpreter asminterpreter)
+set_property(TARGET asm_interpreter PROPERTY C_STANDARD 11)

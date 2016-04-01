@@ -1,0 +1,7 @@
+project(testlibasm)
+enable_testing()
+add_executable(testlibasm main.c)
+include_directories(../lib/include)
+target_link_libraries(testlibasm asminterpreter)
+target_link_libraries(testlibasm tap)
+add_test(NAME testlibasm COMMAND testlibasm)

@@ -26,6 +26,7 @@ void maybe_print_error(reg* r) {
 int main(int argc, char *argv[]) {
   (void)argc;(void)argv;
   init_asm_interpreter();
+  char *func = NULL, *car = NULL, *cadr = NULL, *caddr = NULL;
 #if __gnu_linux__
   struct sigaction action;
   memset(&action, 0, sizeof(struct sigaction));
@@ -38,7 +39,6 @@ int main(int argc, char *argv[]) {
 #else
   while (1) {
 #endif
-    char *func, *car, *cadr, *caddr;
     func = calloc(4 + 1, sizeof(char));
     car = calloc(4 + 1, sizeof(char));
     cadr = calloc(4 + 1, sizeof(char));
@@ -58,11 +58,10 @@ int main(int argc, char *argv[]) {
     puts(res->debug);
 #endif
     maybe_print_error(res);
-    free(func);
-    free(car);
-    free(cadr);
-    free(caddr);
+    free(func); free(car); free(cadr); free(caddr);
+    func = NULL; car = NULL; cadr = NULL; caddr = NULL;
   }
+  free(func); free(car); free(cadr); free(caddr);
   printf("\nExiting...\n");
   free_asm_interpreter();
   return 0;

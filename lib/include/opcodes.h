@@ -11,6 +11,12 @@ typedef enum {ADD, MUL, DIV, SUB, LD, SAV, P, STO, SET} OPCODE;
 #define OPCODE_FUNC(NAME) reg* NAME(int car, int cadr, int caddr)
 #define MEMTABLE_SIZE 255
 #define REGISTERTABLE_SIZE 2
+#define FUNC_TABLE_SIZE 9
+#define BINARY_ERR -1
+#define CTOI_ERR -2
+#define OUT_OF_BOUNDS_ERROR -3
+#define DIV_BY_ZERO_ERROR -4
+#define UNDEFINED_FUNCTION -5
 typedef struct reg {
   uint8_t val;
   char debug[64]; // for printing the interpreted results
@@ -19,6 +25,7 @@ typedef struct reg {
 }reg;
 reg* MEMTABLE[MEMTABLE_SIZE];
 reg* REGISTERTABLE[REGISTERTABLE_SIZE]; // the two registers
+reg* err_reg;
 OPCODE_FUNC(add);
 OPCODE_FUNC(mul);
 OPCODE_FUNC(divide);
@@ -28,11 +35,13 @@ OPCODE_FUNC(sav);
 OPCODE_FUNC(p);
 OPCODE_FUNC(sto);
 OPCODE_FUNC(set);
+int in_bounds(int i);
 reg* new_register();
 void init_asm_interpreter();
 void free_asm_interpreter();
 int ctoi(char c);
 int parse_binary(char* binary, int factor, int scale);
 reg* parse_and_run(char* func, char* car, char* cadr, char* caddr);
+void inplace_reverse(char * str);
 /* FUNC_TABLE functions are callable like (*FUNC_TABLE[0])(reg1, reg2)  for adding one register to another */
 #endif /* OPCODES_H */

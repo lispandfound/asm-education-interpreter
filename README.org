@@ -45,11 +45,14 @@ language, for simplicity's sake on my part, is 16 bits long. This was chosen to
 leave plenty of room for maneuvering and flexibility in function arguments. An
 example instruction might look like:
 #+BEGIN_QUOTE
-0001 0000 0001 0000
+0000 0000 0001 0000
 #+END_QUOTE
 In this case, an ADD instruction was called, adding register 2 to register 1
-storing the result with register 1. Notice that the user is required to pad the
-instruction up to 16 bits.
+storing the result with register 1. Notice that even though the add instruction
+takes only 2 arguments (two registers respectively), the third still has to be
+written out. This bit padding, as it is referred to, is rather common because it
+allow the parsers to guarantee an exact amount of bits per instruction and don't need
+variable length buffers to hold the information (which are a nightmare).
 
 This assembly isn't complex, there aren't many obscurities. Users do not need to
 know if they are developing for x86_64 architecture or whether memory is

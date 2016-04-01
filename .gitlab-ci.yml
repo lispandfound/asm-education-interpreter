@@ -9,7 +9,7 @@ build_job:
   script:
     - cmake .
     - make
-test:
+test_job:
   stage: test
   script:
-    - cd test && ctest
+    - cd test && ./testlibasm

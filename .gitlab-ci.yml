@@ -12,4 +12,6 @@ build_job:
 test_job:
   stage: test
   script:
-    - cd test && ./testlibasm
+    - cmake .
+    - make && make test
+    - cd test && ctest

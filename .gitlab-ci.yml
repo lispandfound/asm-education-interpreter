@@ -1,6 +1,8 @@
 before_script:
   - apt-get update -qq && apt-get install -y -qq cmake
-  - git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install && cd ..
+  - git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make
+  install && cd ..
+  - ldconfig
 stages:
   - build
   - test

@@ -3,9 +3,13 @@ before_script:
   - apt-get update -qq && apt-get install -y -qq cmake
 stages:
   - build
+  - test
 build_job:
   stage: build
   script:
     - cmake .
     - make
-    - ctest
+test:
+  stage: test
+  script:
+    - cd test && ctest

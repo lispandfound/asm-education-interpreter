@@ -1,5 +1,4 @@
 before_script:
-  - git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install && cd ..
   - apt-get update -qq && apt-get install -y -qq cmake
 stages:
   - build
@@ -12,6 +11,7 @@ build_job:
 test_job:
   stage: test
   script:
+    - git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install && cd ..
     - cmake .
     - make && make test
     - cd test && ctest

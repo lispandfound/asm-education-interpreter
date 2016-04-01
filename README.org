@@ -2,10 +2,48 @@
 
 -- A small Assembly (ish) DSL for the purpose of teaching new coders differences
 between high and low languages
-* Design
+* Brief
+** Research
+In developing the program, a number of design decisions are needed to be made
+in order to develop a working product.
+*** Audience
+As the primary stakeholders for the program are mainly students, the program
+needs to be tended towards them in order to ensure that they can use the
+program effectively.
+
+In order to learn what sorts of elements I needed for this program I looked at
+other educational assemblies that predate my project and collected notes based
+on what I thought I could incorporate:
+
+- Little Man Computer
+  [[https://en.wikipedia.org/wiki/Little_man_computer][Wikipedia Page]]. Little Man Computer is an educational base-10 executable code
+  or assembly language designed to emulate the basics of a modern computer.
+  The language is capable of control flow, arithmetic, basic IO and stored
+  memory. From here I took the concepts of stored memory, which I wasn't
+  planning on doing originally, because in studying the[[https://en.wikipedia.org/wiki/Von_Neumann_architecture][ Von Neumann Architecture]]
+  I realized that the concepts of memory management are an important concept for
+  students learning about lower level languages to grasp. Often in higher level
+  languages that are commonly used for teaching (e.g python, javascript, ruby)
+  understanding that memory is a physical thing they can write to is something
+  that is rather important. This is particularly when programmers in real life face heap
+  and stack errors it's important to understand that memory is finite, as well
+  as how and where you would choose to write to memory in general.
+- Crunch
+  [[http://codio.com/docs/teacher/special/crunch/][Crunch by codio]] is offered as a modern alternative to Little Man Computer.
+  Crunch features a far more complex view of the CPU and instructional
+  programming than Little Man Computer does. For example, as far as my research
+  can tell me, Little Man Computer features no concept of a stack. Crunch
+  however does feature a stack, which can be pushed and popped from as you would
+  expect. Crunch is also modelled more closely with actual modern assembly than
+  Little Man Computer is which inevitably means it carries a lot of the tradition
+  that assembly does as well (e.g JMP for jumping to a label). From here I took
+  the prompt (being a simple ">"), which while I thought was a little too vague
+  as an input guider I realized could be used provided enough documentation was included.
+
+** Code Design
 The design is broken into multiple pieces for consistency and compatibility
 reasons.
-** Directory Tree
+*** Directory Tree
 #+BEGIN_EXAMPLE
 .
 ├── include
@@ -38,7 +76,7 @@ There are a few other files, notably CMakeLists.txt and .clang_complete but
 these can be safely ignored (they don't provide anything code wise, they are
 just for building). Upon building *a ton of files will be created*, ignore these
 too.
-** The Assembly Itself
+*** The Assembly Itself
 The assembly DSL differs greatly from the real assembly (things like nasm,
 etc.), in that it is entirely written in binary. Each instruction in this
 language, for simplicity's sake on my part, is 16 bits long. This was chosen to
@@ -63,7 +101,7 @@ assembly. The purpose of this program isn't to make people whizzes at assembly,
 rather encourage learning of binary numbers and show that low level languages
 are highly verbose and take large swaths of code to achieve simple tasks.
 
-*** Table of Op Codes
+**** Table of Op Codes
 | Code | Arguments    | Binary | Explanation                                                        |
 |------+--------------+--------+--------------------------------------------------------------------|
 | ADD  | REG1, REG2   |   0000 | Add the contents of REG2 to REG1, storing the result in REG1       |
@@ -75,3 +113,4 @@ are highly verbose and take large swaths of code to achieve simple tasks.
 | P    | REG1         |   0110 | Print the contents of REG1                                         |
 | STO  | REG1, MEMLOC |   0111 | Store (destructively) REG1 in MEMLOC                               |
 | SET  | REG1, VAL    |   1000 | Set the Value of REG1 to VAL                                       |
+|      |              |        |                                                                    |

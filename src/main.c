@@ -45,12 +45,15 @@ int main(int argc, char *argv[]) {
     caddr = calloc(4 + 1, sizeof(char));
     printf("> ");
     int err = scanf("%4s %4s %4s %4s", func, car, cadr, caddr);
+    int err = scanf("%5s %5s %5s %5s", func, car, cadr, caddr);
     if (ferror(stdin) || err < 4) {
       // Error occurred during scanning
       fprintf(stderr, "\nASM: Error: Invalid input received\n");
       continue;
     }
     reg *res = parse_and_run(func, car, cadr, caddr);
+    } else {
+      reg *res = parse_and_run(func, car, cadr, caddr);
 #if __gnu_linux__ || __WIN32 || __WIN64
     if (!done)
       puts(res->debug);
@@ -58,6 +61,9 @@ int main(int argc, char *argv[]) {
     puts(res->debug);
 #endif
     maybe_print_error(res);
+      int c = 0;
+      while ((c = fgetc(stdin)) != '\n' && c != EOF); /* Flush stdin */
+    }
     free(func); free(car); free(cadr); free(caddr);
     func = NULL; car = NULL; cadr = NULL; caddr = NULL;
   }

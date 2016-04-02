@@ -1,4 +1,5 @@
 #include <opcodes.h>
+
 reg* (*FUNC_TABLE[FUNC_TABLE_SIZE])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto, set}; // Function table
 int in_bounds(int i) {
   return i >= 0 && i < REGISTERTABLE_SIZE;
@@ -122,10 +123,13 @@ OPCODE_FUNC(sto) {
 reg* new_register() {
   reg* ptr = malloc(sizeof(reg));
   ptr->val = 0;
+  strcpy(ptr->debug, "");
+  strcpy(ptr->error, "");
+  ptr->err = 0;
   return ptr;
 }
 void init_asm_interpreter() {
-  err_reg = malloc(sizeof(reg));
+  err_reg = new_register();
   for (int i = 0; i < REGISTERTABLE_SIZE; i++) {
     REGISTERTABLE[i] = new_register();
   }

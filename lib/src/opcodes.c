@@ -1,4 +1,5 @@
 #include <opcodes.h>
+
 reg* (*FUNC_TABLE[FUNC_TABLE_SIZE])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto, set}; // Function table
 int in_bounds(int i) {
   return i >= 0 && i < REGISTERTABLE_SIZE;
@@ -6,6 +7,7 @@ int in_bounds(int i) {
 OPCODE_FUNC(set) {
   if (!in_bounds(car)) {
     err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
     return err_reg;
   }
   reg* to = REGISTERTABLE[car];
@@ -16,6 +18,7 @@ OPCODE_FUNC(set) {
 OPCODE_FUNC(add) {
   if(!in_bounds(car) || !in_bounds(cadr)) {
     err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
     return err_reg;
   }
   reg* to = REGISTERTABLE[car];
@@ -27,6 +30,7 @@ OPCODE_FUNC(add) {
 OPCODE_FUNC(sub) {
   if(!in_bounds(car) || !in_bounds(cadr)) {
     err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
     return err_reg;
   }
   reg* to = REGISTERTABLE[car];
@@ -39,6 +43,7 @@ OPCODE_FUNC(mul) {
 
   if(!in_bounds(car) || !in_bounds(cadr)) {
     err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
     return err_reg;
   }
   reg* to = REGISTERTABLE[car];
@@ -50,12 +55,14 @@ OPCODE_FUNC(mul) {
 OPCODE_FUNC(divide) {
   if(!in_bounds(car) || !in_bounds(cadr)) {
     err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
     return err_reg;
   }
   reg* to = REGISTERTABLE[car];
   reg* from = REGISTERTABLE[cadr];
   if (from->val == 0) {
     err_reg->err = DIV_BY_ZERO_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Cannot Divide By Zero");
     return err_reg;
   }
   to->val /= from->val;
@@ -66,6 +73,7 @@ OPCODE_FUNC(divide) {
 OPCODE_FUNC(ld) {
   if(!in_bounds(car) || cadr > MEMTABLE_SIZE || cadr < 0) {
     err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
     return err_reg;
   }
   reg* to = REGISTERTABLE[car];
@@ -77,6 +85,7 @@ OPCODE_FUNC(ld) {
 OPCODE_FUNC(sav) {
   if(!in_bounds(car) || cadr > MEMTABLE_SIZE || cadr < 0) {
     err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
     return err_reg;
   }
   reg* from = REGISTERTABLE[car];
@@ -89,6 +98,7 @@ OPCODE_FUNC(sav) {
 OPCODE_FUNC(p) {
   if(!in_bounds(car)) {
     err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
     return err_reg;
   }
   reg* regi = REGISTERTABLE[car];
@@ -99,6 +109,7 @@ OPCODE_FUNC(p) {
 OPCODE_FUNC(sto) {
   if(!in_bounds(car) || cadr > MEMTABLE_SIZE || cadr < 0) {
     err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
     return err_reg;
   }
   reg* from = REGISTERTABLE[car];
@@ -112,10 +123,13 @@ OPCODE_FUNC(sto) {
 reg* new_register() {
   reg* ptr = malloc(sizeof(reg));
   ptr->val = 0;
+  strcpy(ptr->debug, "");
+  strcpy(ptr->error, "");
+  ptr->err = 0;
   return ptr;
 }
 void init_asm_interpreter() {
-  err_reg = malloc(sizeof(reg));
+  err_reg = new_register();
   for (int i = 0; i < REGISTERTABLE_SIZE; i++) {
     REGISTERTABLE[i] = new_register();
   }
@@ -178,6 +192,7 @@ reg* parse_and_run(char* func, char* car, char* cadr, char* caddr) {
   function = parse_binary(func, 0, 0);
   if (function > FUNC_TABLE_SIZE) {
     err_reg->err = UNDEFINED_FUNCTION;
+    strcpy(err_reg->error, "-> ASM: Error: Invalid Function Call");
     return err_reg;
   }
   c = parse_binary(car, 0, 0);
@@ -188,8 +203,8 @@ reg* parse_and_run(char* func, char* car, char* cadr, char* caddr) {
       cd == BINARY_ERR ||
       cdd == BINARY_ERR) {
     err_reg->err = BINARY_ERR;
+    strcpy(err_reg->error, "-> ASM: Error: Invalid Binary Input");
     return err_reg;
   }
   return (*FUNC_TABLE[function])(c, cd, cdd);
 }
-// TODO maybe function pointer table instead of these opcodes

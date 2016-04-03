@@ -1,5 +1,6 @@
-cmake_minimum_required(VERSION 2.6)
-set(CMAKE_C_FLAGS "-Wall -pedantic -O2 -std=gnu99")
+cmake_minimum_required(VERSION 3.1)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic")
+set(CMAKE_C_STANDARD 99)
 include_directories("include")
 add_subdirectory("src")
 add_subdirectory("lib")

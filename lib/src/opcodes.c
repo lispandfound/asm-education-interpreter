@@ -1,8 +1,32 @@
 #include <opcodes.h>
 
-reg* (*FUNC_TABLE[FUNC_TABLE_SIZE])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto, set}; // Function table
+reg* (*FUNC_TABLE[FUNC_TABLE_SIZE])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto, set, p_str}; // Function table
 int in_bounds(int i) {
   return i >= 0 && i < REGISTERTABLE_SIZE;
+}
+OPCODE_FUNC(p_str) {
+  if (!in_bounds(car) || !in_bounds(cadr)) {
+    err_reg->err = OUT_OF_BOUNDS_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Index Out Of Bounds");
+    return err_reg;
+  }
+  reg* r1 = REGISTERTABLE[car];
+  reg* r2 = REGISTERTABLE[cadr];
+  int size = r2->val - r1->val;
+  if (size <= 0) {
+    err_reg->err = INVALID_STR_LENGTH_ERROR;
+    strcpy(err_reg->error, "-> ASM: Error: Invalid String Length");
+    return err_reg;
+  }
+  char string[size + 1];
+  memset(string, 0, size + 1);
+  for (int i = r1->val; i < r2->val; i++) {
+    reg* r = MEMTABLE[i];
+    string[i] = (char)r->val;
+  }
+  string[size + 1] = '\0';
+  sprintf(io_reg->debug, "-> %s", string);
+  return io_reg;
 }
 OPCODE_FUNC(set) {
   if (!in_bounds(car)) {
@@ -130,6 +154,7 @@ reg* new_register() {
 }
 void init_asm_interpreter() {
   err_reg = new_register();
+  io_reg = new_register();
   for (int i = 0; i < REGISTERTABLE_SIZE; i++) {
     REGISTERTABLE[i] = new_register();
   }
@@ -139,6 +164,7 @@ void init_asm_interpreter() {
 }
 void free_asm_interpreter() {
   free(err_reg);
+  free(io_reg);
   for (int i = 0; i < REGISTERTABLE_SIZE; i++) {
     free(REGISTERTABLE[i]);
   }
@@ -153,28 +179,9 @@ int ctoi(char c) {
     return CTOI_ERR;
   }
 }
-void inplace_reverse(char * str)
-{
-  if (str)
-    {
-      char * end = str + strlen(str) - 1;
-      // walk inwards from both ends of the string,
-      // swapping until we get to the middle
-      while (str < end)
-        {
-          char temp = *str;
-          *str = *end;
-          *end = temp;
-          str++;
-          end--;
-        }
-    }
-}
-int parse_binary(char* binary, int factor, int scale) {
+int parse_binary(char* binary, int factor) {
   int power = strlen(binary) - 1;
   int ret = 0;
-  if (scale)
-    inplace_reverse(binary);
   for (char *p = binary; *p != '\0'; p++) {
     int current_number = ctoi(*p);
     if (current_number == CTOI_ERR) {
@@ -189,15 +196,15 @@ int parse_binary(char* binary, int factor, int scale) {
 }
 reg* parse_and_run(char* func, char* car, char* cadr, char* caddr) {
   int function, c, cd, cdd;
-  function = parse_binary(func, 0, 0);
+  function = parse_binary(func, 0);
   if (function > FUNC_TABLE_SIZE) {
     err_reg->err = UNDEFINED_FUNCTION;
     strcpy(err_reg->error, "-> ASM: Error: Invalid Function Call");
     return err_reg;
   }
-  c = parse_binary(car, 0, 0);
-  cd = parse_binary(cadr, function == 8 ? 4 : 0, 0);
-  cdd = parse_binary(caddr, 0, 0);
+  c = parse_binary(car, 0);
+  cd = parse_binary(cadr, function == 8 ? 4 : 0);
+  cdd = parse_binary(caddr, 0);
   if (function == BINARY_ERR ||
       c == BINARY_ERR ||
       cd == BINARY_ERR ||

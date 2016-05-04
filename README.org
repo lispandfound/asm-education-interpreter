@@ -2,6 +2,80 @@
 
 -- A small Assembly (ish) DSL for the purpose of teaching new coders differences
 between high and low languages
+* Code Design
+The design is broken into multiple pieces for consistency and compatibility
+reasons.
+*** Directory Tree
+#+BEGIN_EXAMPLE
+.
+├── include
+├── lib
+│   ├── include
+│   │   └── opcodes.h
+│   └── src
+│       └── opcodes.c
+├── README.org
+└── src
+    ├── asm_interpreter
+    └── main.c
+#+END_EXAMPLE
+- Essentially there is one library (the lib folder) called libasminterpreter, which backends all the
+  logic, and is strictly cross platform. Code here is expected to be much higher
+  quality than usual (to make it easier to debug). The kind of logic
+  expected here would be the binary interpreter and other macros/functions for the internals of the
+  asm-like language on a whole.
+- The other component to the puzzle is the os related presentation code. This
+  code acts as a front end, providing the UI and other related components (such as file
+  IO etc). This is found in the "src" directory.
+- README.org is what you are reading now.
+- main.c is the main file for the UI code, in that it is the fallback if no
+  better options exist when compiling. The means that if you are on a system
+  like Windows, it will compile this file because no GUI code exists for it
+  (yet).
+- asm_interpreter (asm_interpreter.exe for windows systems) is the compiled
+  executable.
+There are a few other files, notably CMakeLists.txt and .clang_complete but
+these can be safely ignored (they don't provide anything code wise, they are
+just for building). Upon building *a ton of files will be created*, ignore these
+too.
+*** The Assembly Itself
+The assembly DSL differs greatly from the real assembly (things like nasm,
+etc.), in that it is entirely written in binary. Each instruction in this
+language, for simplicity's sake on my part, is 16 bits long. This was chosen to
+leave plenty of room for maneuvering and flexibility in function arguments. An
+example instruction might look like:
+#+BEGIN_QUOTE
+0000 0000 0001 0000
+#+END_QUOTE
+In this case, an ADD instruction was called, adding register 2 to register 1
+storing the result with register 1. Notice that even though the add instruction
+takes only 2 arguments (two registers respectively), the third still has to be
+written out. This bit padding, as it is referred to, is rather common because it
+allow the parsers to guarantee an exact amount of bits per instruction and don't need
+variable length buffers to hold the information (which are a nightmare).
+
+This assembly isn't complex, there aren't many obscurities. Users do not need to
+know if they are developing for x86_64 architecture or whether memory is
+available. This is for a few reasons, firstly because the students may or not be
+able to grasp memory management concepts, and because these sort of things
+aren't required to show properly the verbose nature of machine code and
+assembly. The purpose of this program isn't to make people whizzes at assembly,
+rather encourage learning of binary numbers and show that low level languages
+are highly verbose and take large swaths of code to achieve simple tasks.
+
+**** Table of Op Codes
+| Code | Arguments    | Binary | Explanation                                                        |
+|------+--------------+--------+--------------------------------------------------------------------|
+| ADD  | REG1, REG2   |   0000 | Add the contents of REG2 to REG1, storing the result in REG1       |
+| MUL  | REG1, REG2   |   0001 | Multiply the contents of REG2 and REG1, storing the result in REG1 |
+| DIV  | REG1, REG2   |   0010 | Divide REG1 by REG2, and store the result in REG1                  |
+| SUB  | REG1, REG2   |   0011 | Subtract REG2 from REG1, storing the result in REG1                |
+| LD   | REG1, MEMLOC |   0100 | Load Memloc (fake location in memory) into REG1                    |
+| SAV  | REG1, MEMLOC |   0101 | Copy REG1 to MEMLOC                                                |
+| P    | REG1         |   0110 | Print the contents of REG1                                         |
+| STO  | REG1, MEMLOC |   0111 | Store (destructively) REG1 in MEMLOC                               |
+| SET  | REG1, VAL    |   1000 | Set the Value of REG1 to VAL                                       |
+|      |              |        |                                                                    |
 * Brief
 ** Research
 In developing the program, a number of design decisions are needed to be made
@@ -110,77 +184,42 @@ environmental factor that needs to be accounted for.
      design should be employed to ensure that the user doesn't become swamped with
      too much information too fast.
 ** TODO Opinions of Stake Holders
-** Code Design
-The design is broken into multiple pieces for consistency and compatibility
-reasons.
-*** Directory Tree
-#+BEGIN_EXAMPLE
-.
-├── include
-├── lib
-│   ├── include
-│   │   └── opcodes.h
-│   └── src
-│       └── opcodes.c
-├── README.org
-└── src
-    ├── asm_interpreter
-    └── main.c
-#+END_EXAMPLE
-- Essentially there is one library (the lib folder) called libasminterpreter, which backends all the
-  logic, and is strictly cross platform. Code here is expected to be much higher
-  quality than usual (to make it easier to debug). The kind of logic
-  expected here would be the binary interpreter and other macros/functions for the internals of the
-  asm-like language on a whole.
-- The other component to the puzzle is the os related presentation code. This
-  code acts as a front end, providing the UI and other related components (such as file
-  IO etc). This is found in the "src" directory.
-- README.org is what you are reading now.
-- main.c is the main file for the UI code, in that it is the fallback if no
-  better options exist when compiling. The means that if you are on a system
-  like Windows, it will compile this file because no GUI code exists for it
-  (yet).
-- asm_interpreter (asm_interpreter.exe for windows systems) is the compiled
-  executable.
-There are a few other files, notably CMakeLists.txt and .clang_complete but
-these can be safely ignored (they don't provide anything code wise, they are
-just for building). Upon building *a ton of files will be created*, ignore these
-too.
-*** The Assembly Itself
-The assembly DSL differs greatly from the real assembly (things like nasm,
-etc.), in that it is entirely written in binary. Each instruction in this
-language, for simplicity's sake on my part, is 16 bits long. This was chosen to
-leave plenty of room for maneuvering and flexibility in function arguments. An
-example instruction might look like:
-#+BEGIN_QUOTE
-0000 0000 0001 0000
-#+END_QUOTE
-In this case, an ADD instruction was called, adding register 2 to register 1
-storing the result with register 1. Notice that even though the add instruction
-takes only 2 arguments (two registers respectively), the third still has to be
-written out. This bit padding, as it is referred to, is rather common because it
-allow the parsers to guarantee an exact amount of bits per instruction and don't need
-variable length buffers to hold the information (which are a nightmare).
-
-This assembly isn't complex, there aren't many obscurities. Users do not need to
-know if they are developing for x86_64 architecture or whether memory is
-available. This is for a few reasons, firstly because the students may or not be
-able to grasp memory management concepts, and because these sort of things
-aren't required to show properly the verbose nature of machine code and
-assembly. The purpose of this program isn't to make people whizzes at assembly,
-rather encourage learning of binary numbers and show that low level languages
-are highly verbose and take large swaths of code to achieve simple tasks.
-
-**** Table of Op Codes
-| Code | Arguments    | Binary | Explanation                                                        |
-|------+--------------+--------+--------------------------------------------------------------------|
-| ADD  | REG1, REG2   |   0000 | Add the contents of REG2 to REG1, storing the result in REG1       |
-| MUL  | REG1, REG2   |   0001 | Multiply the contents of REG2 and REG1, storing the result in REG1 |
-| DIV  | REG1, REG2   |   0010 | Divide REG1 by REG2, and store the result in REG1                  |
-| SUB  | REG1, REG2   |   0011 | Subtract REG2 from REG1, storing the result in REG1                |
-| LD   | REG1, MEMLOC |   0100 | Load Memloc (fake location in memory) into REG1                    |
-| SAV  | REG1, MEMLOC |   0101 | Copy REG1 to MEMLOC                                                |
-| P    | REG1         |   0110 | Print the contents of REG1                                         |
-| STO  | REG1, MEMLOC |   0111 | Store (destructively) REG1 in MEMLOC                               |
-| SET  | REG1, VAL    |   1000 | Set the Value of REG1 to VAL                                       |
-|      |              |        |                                                                    |
+** Why This Program Should Exist
+In Response to the needs outlined by the stakeholders, as well as the Social
+Environment and Background presented, supplemented with prior research, I have
+developed an outcome to meet them. This outcome, in the form of a program, will
+be a text interface driven program. It will attempt to emulate the types of
+concepts a low level programmer might experience (e.g memory, integer
+over/underflow, registers and low level verbosity), as well as providing
+flexibility for the developer to maintain. It's primary development goals will
+be to be fast, error free, and cross platform. From a users perspective,
+documentation, emulation and discoverability will be the primary goals. This
+outcome should be developed as a huge problem for people first coming into the
+industry and learning to program is that they start with something like Python,
+which abstracts a lot of ideas away. This invariably leads to programmers who
+don't understand the mountain they stand on while writing code. As a result they
+are frivolous with memory (i.e not optimizing for memory usage), or they don't
+understand more nuanced bugs related to it's C underpinnings. As a result I
+think programs like the one I intend to develop will help the user understand
+the mountain they stand on when writing python, and perhaps learn to be a little
+more careful about how they write code.
+** Physical and Functional Components
+Based of the stakeholder considerations, as well as my own, I have created a
+functional and physical components list. In order to tackle emulation, I need to
+use a programming language that is closer to the metal to get a more authentic experience.
+Thus, I have chosen C to perform this function. Not only does C allow me greater
+control over how the program may work, but it's simplicity allows for greater
+lateral movement among the platforms. It also greatly increases the speed, and
+removes any dependencies on the users part for any specific runtime e.g python.
+I have also opted for a cli application for the very same reason. Almost as
+important as the code itself, in realizing the needs of the stakeholders would
+be documentation. Furthermore, the primary source of input will be binary. This
+means the opcodes as well as any arguments will be entirely binary as well. The
+logic for this is that it gets students and users a better feel for how
+something might be represented in the computers memory, and therefore they can
+better reason about how a computer operates. The documentation will be extensive for this program and
+include use cases for achieving various concepts someone might want to know if
+they are working in a low level language. Finally I have gone with an
+interpreter as the DSL's (domain specific language) primary form of input. This
+to help with discoverability, i.e the ability for the user to inspect the state
+mid run is crucial to getting an outcome that meets the specifications.

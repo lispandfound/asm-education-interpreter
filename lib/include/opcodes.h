@@ -1,3 +1,10 @@
+/*
+
+  Opcodes.h
+
+  This file is the header for opcodes.c, but also contains important macros that define error codes, register and memory table sizes
+
+ */
 #ifndef OPCODES_H
 #define OPCODES_H
 #include <stdint.h>
@@ -5,22 +12,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-typedef enum {ADD, MUL, DIV, SUB, LD, SAV, P, STO, SET} OPCODE;
-// Memory table, is just a list of integers
-// Register struct, a wrap around an int with a debug message for the results of the last instruction
+/* OPCODE_FUNC is the template for an opcode (e.g the Add opcode). The reason we use a macro here is to enhance readability, and to provide the an easy way to define consistent functions doing the same task */
 #define OPCODE_FUNC(NAME) reg* NAME(int car, int cadr, int caddr)
 #define MEMTABLE_SIZE 15
 #define REGISTERTABLE_SIZE 2
 #define FUNC_TABLE_SIZE 10
 #define BINARY_ERR -1
+/* CTOI is short for character to integer */
 #define CTOI_ERR -2
 #define OUT_OF_BOUNDS_ERROR -3
 #define DIV_BY_ZERO_ERROR -4
 #define UNDEFINED_FUNCTION -5
 #define INVALID_STR_LENGTH_ERROR -6
+/* reg struct, this is the structure for registers, and is a critical part of the system in general */
 typedef struct reg {
+  /* An 8-bit integer storing the value of the register. The reason this is 8 bit is because that is the largest number about to be set by the SET opcode */
   uint8_t val;
-  char debug[255]; // for printing the interpreted results
+  /* Debug contains the variable for debug information (so the return result of an OPCODE, e.g ADD adding 1 + 1 together might return "-> 2") */
+  char debug[255];
   int err;
   char error[64];
 }reg;

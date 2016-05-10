@@ -1,6 +1,7 @@
 #include <opcodes.h>
 
 reg* (*FUNC_TABLE[FUNC_TABLE_SIZE])(int, int, int) = {add, mul, divide, sub, ld, sav, p, sto, set, p_str}; // Function table
+
 int in_bounds(int i) {
   return i >= 0 && i < REGISTERTABLE_SIZE;
 }

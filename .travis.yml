@@ -1,0 +1,10 @@
+language: c
+script: cmake
+install:
+  - git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install && cd ..
+  - ldconfig
+after_success:
+  cd test && test
+compiler:
+  - gcc
+  - clang

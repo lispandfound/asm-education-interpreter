@@ -2,7 +2,7 @@
 
 -- A small Assembly (ish) DSL for the purpose of teaching new coders differences
 between high and low languages
-https://travis-ci.org/Triagle/asm-education-interpreter.svg?branch=develop
+[[https://travis-ci.org/Triagle/asm-education-interpreter.svg?branch=develop]]
 * Code Design
 The design is broken into multiple pieces for consistency and compatibility
 reasons.

@@ -2,8 +2,7 @@ language: c
 script: cmake
 sudo: required
 install:
-  - git clone https://github.com/zorgnax/libtap.git && cd libtap && make && sudo
-  make install && cd ..
+  - git clone https://github.com/zorgnax/libtap.git && cd libtap && make && sudo make install && cd ..
   - sudo ldconfig
 after_success:
   - cd test && test

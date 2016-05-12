@@ -6,7 +6,7 @@ install:
   make install && cd ..
   - sudo ldconfig
 after_success:
-  cd test && test
+  - cd test && test
 compiler:
   - gcc
   - clang

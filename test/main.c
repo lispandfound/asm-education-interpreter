@@ -3,7 +3,7 @@
 #include <stdio.h>
 int main(int argc, char *argv[])
 {
-  plan(44);
+  plan(45);
   /*
     Character to int tests
    */
@@ -136,6 +136,10 @@ int main(int argc, char *argv[])
   ok(r->err == INVALID_STR_LENGTH_ERROR, "Test empty string case");
   r = p_str(3, 1, 0);
   ok(r->err == OUT_OF_BOUNDS_ERROR, "Test Out of Bounds Error");
+  (void)set(0, 0, 0);
+  (void)set(1, 21, 0);
+  r = p_str(0, 1, 0);
+  ok(r->err == INVALID_STR_LENGTH_ERROR, "Test Out of Bounds Error (range too large)");
   /*
     Parsing
   */

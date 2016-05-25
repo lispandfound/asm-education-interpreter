@@ -24,8 +24,10 @@ OPCODE_FUNC(p_str) {
   reg* r1 = REGISTERTABLE[car];
   reg* r2 = REGISTERTABLE[cadr];
   int size = r2->val - r1->val;
+  int r1_in_range = r1->val >= 0 && r1->val <= MEMTABLE_SIZE;
+  int r2_in_range = r2->val >= 0 && r2->val <= MEMTABLE_SIZE;
   /* Check the user hasn't got an invalid string range */
-  if (size <= 0) {
+  if (size <= 0 || !(r1_in_range && r2_in_range)) {
     err_reg->err = INVALID_STR_LENGTH_ERROR;
     strcpy(err_reg->error, "-> ASM: Error: Invalid String Length");
     return err_reg;

@@ -172,30 +172,32 @@ required a lot of prior knowledge about command line flags and what they did
 help, usually "/h" on windows systems).
 
 After researching into prior programs created for this area, I designed the way
+stakeholder's seemed to prefer cmd's ">", because cmd was something they had at
 my own program would run from a design standpoint. I knew that in the interest
 of time it would have to be a console program (because otherwise dependency hell
 would make it hard to develop for multiple platforms). As this was an
 interpreted program it would need and interactive step by step feedback from the
-user. So I first worked on a
-prompt[fn:1]. The prompt I felt needed to reflect traditional prompts (e.g sh's "$",
-or cmd's ">"). I tested the some common command line prompts used by other
-programs with stakeholders (sh's "$", cmd's ">", and fish's "~>"). The stakeholder's seemed to prefer cmd's ">", because cmd was something they had at
-least seen before in some capacity. Even the ones who hadn't seen cmd before recognized it as a
-prompt they needed to put something into. I could have
-very easily picked a more descriptive prompt like "Please input valid foolang
-syntax". But this I chose against, mostly due to the fact that this kind of
-prompt doesn't help the user input any valid foolang syntax, and that if you
-were writing a lot of code it could become very cluttered as an interface very
-quickly. I decided that this kind of explanation was pointless provided
-documentation on how to use the program was given for the user. In the end I chose a ">" because I thought it immediately felt to
-me more like a prompt asking for input. The returned output was also needed
-design. After consulting with my stakeholders about the need for feedback from
-the interpreter, I took a look at what kind of prompt would signify feedback. In
-the end I chose "->" followed by the output to represent a returned value.
-"Output:" Could also have been used here, but the consistency of the ">" was
-more important in this instance than the straight forward "Output:" that was
-being displayed. Putting this together we get an example input/output session
-like so:
+user. So I first worked on a prompt[fn:1]. The prompt I felt needed to reflect
+traditional prompts (e.g sh's "$", or cmd's ">"). I tested the some common
+command line prompts used by other programs with stakeholders (sh's "$", cmd's
+">", and fish's "~>"). The least seen before in some capacity. Even the ones who
+hadn't seen cmd before recognized it as a prompt they needed to put something
+into. I could have very easily picked a more descriptive prompt like "Please
+input valid foolang syntax". But this I chose against, mostly due to the fact
+that this kind of prompt doesn't help the user input any valid foolang syntax,
+and that if you were writing a lot of code it could become very cluttered as an
+interface very quickly. Furthermore, the fact that Crunch (as an already
+existing solution) also had the same prompt gave me further evidence that this
+would work. I also decided that this kind of explanation was pointless provided
+documentation on how to use the program was given for the user. Therefore I
+chose a ">" because I thought it immediately felt to me more like a prompt
+asking for input. The returned output was also needed design. After consulting
+with my stakeholders about the need for feedback from the interpreter, I took a
+look at what kind of prompt would signify feedback. In the end I chose "->"
+followed by the output to represent a returned value. "Output:" Could also have
+been used here, but the consistency of the ">" was more important in this
+instance than the straight forward "Output:" that was being displayed. Putting
+this together we get an example input/output session like so:
 #+BEGIN_EXAMPLE
 > 1111 0000 1111 0000
 
@@ -221,6 +223,9 @@ This might represent (assuming that =0001= corresponds to the ADD instruction) A
 the value of register 0 (0000) to the value of register 1 (0001). Notice the
 last argument (ARG3) is ignored but required nonetheless. I chose this style
 because it more closely represents an English way of parsing the values.
+The same sentiment was expressed across the stakeholders I asked. Nearly all the
+stakeholders preferred the broken up language than one long string (or as one
+referred to this long string as /hacker mumbo jumbo/).
 ** Language Choice
 I chose to develop this program in C, because C gave me not only the functions
 and arrays, etc, that a general purpose programming language provides, but also

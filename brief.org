@@ -96,7 +96,7 @@ A more detailed break down (including their needs) is listed below:
     both those who are relatively independant (in that they'll want to do
     things for themselves to find out), and those who prefer the guidance of a
     teacher in general. In order for that to be achieved, the program needs to
-    be *flexible*, *discoverable* and *documented*. If the program is flexible, then those who are
+    be *simple*, *flexible*, *discoverable* and *documented*. If the program is flexible, then those who are
     independant can work on their own, discovering nuance of low level code,
     whilst those who need it can be taught by the teacher. Moreover for those
     who do require a teacher's guidance, documentation is important to ensure
@@ -136,7 +136,16 @@ nonetheless.
 I Considered stakeholer's opinions multiple times through out the course of
 developing the outcome.
 ** Teacher
-
+I discussed multiple times, particularly towards the beginning of the lesson,
+with my DTP teacher about how the outcome may or may not be developed. From this
+I learned that the program should be in an assembly style/format using assembly
+style names for opcodes. I also got a gauge of the requirements from a teaching
+perspective of what the program might look like, namely that the program should
+be /simple/ rather than complex. Basic functions, like addition, subtraction,
+division and multiplication on registers, as well as some basics of string
+printing and ascii representation. Basically simple enough to show basic
+concepts, in a way that was straight forward to present to a class and get them
+started on learning without many prerequisites.
 ** Students
 When I presented some fellow students in my class (who are the target audience
 here) with a few design related questions about the program. For emulation of

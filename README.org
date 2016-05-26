@@ -2,45 +2,8 @@
 
 -- A small Assembly (ish) DSL for the purpose of teaching new coders differences
 between high and low languages
-* Brief
-** Research
-In developing the program, a number of design decisions are needed to be made
-in order to develop a working product.
-*** Audience
-As the primary stakeholders for the program are mainly students, the program
-needs to be tended towards them in order to ensure that they can use the
-program effectively.
-
-In order to learn what sorts of elements I needed for this program I looked at
-other educational assemblies that predate my project and collected notes based
-on what I thought I could incorporate:
-
-- Little Man Computer
-  [[https://en.wikipedia.org/wiki/Little_man_computer][Wikipedia Page]]. Little Man Computer is an educational base-10 executable code
-  or assembly language designed to emulate the basics of a modern computer.
-  The language is capable of control flow, arithmetic, basic IO and stored
-  memory. From here I took the concepts of stored memory, which I wasn't
-  planning on doing originally, because in studying the[[https://en.wikipedia.org/wiki/Von_Neumann_architecture][ Von Neumann Architecture]]
-  I realized that the concepts of memory management are an important concept for
-  students learning about lower level languages to grasp. Often in higher level
-  languages that are commonly used for teaching (e.g python, javascript, ruby)
-  understanding that memory is a physical thing they can write to is something
-  that is rather important. This is particularly when programmers in real life face heap
-  and stack errors it's important to understand that memory is finite, as well
-  as how and where you would choose to write to memory in general.
-- Crunch
-  [[http://codio.com/docs/teacher/special/crunch/][Crunch by codio]] is offered as a modern alternative to Little Man Computer.
-  Crunch features a far more complex view of the CPU and instructional
-  programming than Little Man Computer does. For example, as far as my research
-  can tell me, Little Man Computer features no concept of a stack. Crunch
-  however does feature a stack, which can be pushed and popped from as you would
-  expect. Crunch is also modelled more closely with actual modern assembly than
-  Little Man Computer is which inevitably means it carries a lot of the tradition
-  that assembly does as well (e.g JMP for jumping to a label). From here I took
-  the prompt (being a simple ">"), which while I thought was a little too vague
-  as an input guider I realized could be used provided enough documentation was included.
-
-** Code Design
+[[https://travis-ci.org/Triagle/asm-education-interpreter.svg?branch=develop]]
+* Code Design
 The design is broken into multiple pieces for consistency and compatibility
 reasons.
 *** Directory Tree
@@ -114,3 +77,150 @@ are highly verbose and take large swaths of code to achieve simple tasks.
 | STO  | REG1, MEMLOC |   0111 | Store (destructively) REG1 in MEMLOC                               |
 | SET  | REG1, VAL    |   1000 | Set the Value of REG1 to VAL                                       |
 |      |              |        |                                                                    |
+* Brief
+** Research
+In developing the program, a number of design decisions are needed to be made
+in order to develop a working product.
+*** Audience
+As the primary stakeholders for the program are mainly students, the program
+needs to be tended towards them in order to ensure that they can use the
+program effectively.
+
+In order to learn what sorts of elements I needed for this program I looked at
+other educational assemblies that predate my project and collected notes based
+on what I thought I could incorporate:
+
+- Little Man Computer
+  [[https://en.wikipedia.org/wiki/Little_man_computer][Wikipedia Page]]. Little Man Computer is an educational base-10 executable code
+  or assembly language designed to emulate the basics of a modern computer.
+  The language is capable of control flow, arithmetic, basic IO and stored
+  memory. From here I took the concepts of stored memory, which I wasn't
+  planning on doing originally, because in studying the[[https://en.wikipedia.org/wiki/Von_Neumann_architecture][ Von Neumann Architecture]]
+  I realized that the concepts of memory management are an important concept for
+  students learning about lower level languages to grasp. Often in higher level
+  languages that are commonly used for teaching (e.g python, javascript, ruby)
+  understanding that memory is a physical thing they can write to is something
+  that is rather important. This is particularly when programmers in real life face heap
+  and stack errors it's important to understand that memory is finite, as well
+  as how and where you would choose to write to memory in general.
+- Crunch
+  [[http://codio.com/docs/teacher/special/crunch/][Crunch by codio]] is offered as a modern alternative to Little Man Computer.
+  Crunch features a far more complex view of the CPU and instructional
+  programming than Little Man Computer does. For example, as far as my research
+  can tell me, Little Man Computer features no concept of a stack. Crunch
+  however does feature a stack, which can be pushed and popped from as you would
+  expect. Crunch is also modelled more closely with actual modern assembly than
+  Little Man Computer is which inevitably means it carries a lot of the tradition
+  that assembly does as well (e.g JMP for jumping to a label). From here I took
+  the prompt (being a simple ">"), which while I thought was a little too vague
+  as an input guider I realized could be used provided enough documentation was
+  included.
+** Stakeholders
+In developing this solution I identified a few stakeholders whose opinions were
+integral to it's success. These stakeholders were the students, and the teacher.
+A more detailed break down (including their needs) is listed below:
+
+
+- Students :: If the ultimate goal of the solution is to show students what
+     programming in a low level environment looks like, then such a program
+     needs two things. Firstly it needs to *emulate* the environment of a low
+     level program, which includes registers, memory management, and common
+     instructions to manipulate them. Secondly, and perhaps more importantly, it
+     needs to *instruct*, *inform* and *educate* the student on what they're actually
+     doing. This can be achieved through documentation of how the program works,
+     including analogies to real world scenarios, and also importantly providing
+     comprehensive feedback on what each instruction they're running is doing.
+- Teacher :: The teacher's needs are related but not identical to that of the
+     student. The teacher's ultimate goal to to educate and inform students on
+     how low level languages generally work. In order to do that a teacher needs
+     a program that is adaptable to any learning environment, and caters for
+     both those who are relatively independant (in that they'll want to do
+     things for themselves to find out), and those who prefer the guidance of a
+     teacher in general. In order for that to be achieved, the program needs to
+     be *flexible*, *discoverable* and *documented*. If the program is flexible, then those who are
+     independant can work on their own, discovering nuance of low level code,
+     whilst those who need it can be taught by the teacher. Moreover for those
+     who do require a teacher's guidance, documentation is important to ensure
+     that any teacher can provide quick example demonstrating low level concepts
+     without quickly and easily. This might be achieved with example programs
+     for each low level concept the outcome is capable of reproducing
+
+Overall, from both teachers and students, I have identified key points that need
+to be focused on in order for success to be achieved.
+
+1. Emulation. Without an emulated environment neither documentation nor
+   discoverability will achieve the goal.
+2. Documentation. The program needs to have comprehensive documentation in order
+   for the teacher to teach properly, and the students to understand what
+   they're doing.
+3. Discoverability. Independant students are going to want to learn the ropes
+   themselves. In order for that to be achieved, they are going to need feedback
+   from the program that shows exactly what the program is doing at a given
+   time.
+Additionally, as my perspective as the developer, I have my own values that
+aren't necessarily in the interests of students or teachers, but benefit them
+nonetheless.
+1. Extensibility. The code base needs to be able to be extended quickly and
+   easily, through abstracted details and standardized interfaces.
+2. Foolproof Code. The code needs to be able to withstand any input, as this
+   kind of project relies heavily on user input, I cannot be sure what they'll
+   enter. Thus I need an easy way of showing that the code I write will work in
+   all cases.
+3. Simplicity. Almost as a requirement of the previous two, the code needs to
+   remain simple and require little to no dependencies bar a standard library.
+4. Cross Platform. The code needs to be able to be compiled for Windows, Mac OS
+   X, and Linux in simple steps. Provided the code base is simple, and projects
+   like mingw do their job, this should be easy to carry out.
+
+** Social Environment And Background
+The social needs of program also need to be identified. From a societal
+perspective, there is almost no way to go wrong here. Nobody is likely to be
+offended by the design of this program, as it really asks nothing personal of
+the user or requires the user to interact personally with it. However there is one main
+environmental factor that needs to be accounted for.
+
+- Prior knowledge :: The environment this program is aimed at is those who may
+     have prior knowledge of coding (although possibly not), and those who haven't
+     had much in low level programming. In order to account for this, simple
+     design should be employed to ensure that the user doesn't become swamped with
+     too much information too fast.
+** TODO Opinions of Stake Holders
+** Why This Program Should Exist
+In Response to the needs outlined by the stakeholders, as well as the Social
+Environment and Background presented, supplemented with prior research, I have
+developed an outcome to meet them. This outcome, in the form of a program, will
+be a text interface driven program. It will attempt to emulate the types of
+concepts a low level programmer might experience (e.g memory, integer
+over/underflow, registers and low level verbosity), as well as providing
+flexibility for the developer to maintain. It's primary development goals will
+be to be fast, error free, and cross platform. From a users perspective,
+documentation, emulation and discoverability will be the primary goals. This
+outcome should be developed as a huge problem for people first coming into the
+industry and learning to program is that they start with something like Python,
+which abstracts a lot of ideas away. This invariably leads to programmers who
+don't understand the mountain they stand on while writing code. As a result they
+are frivolous with memory (i.e not optimizing for memory usage), or they don't
+understand more nuanced bugs related to it's C underpinnings. As a result I
+think programs like the one I intend to develop will help the user understand
+the mountain they stand on when writing python, and perhaps learn to be a little
+more careful about how they write code.
+** Physical and Functional Components
+Based of the stakeholder considerations, as well as my own, I have created a
+functional and physical components list. In order to tackle emulation, I need to
+use a programming language that is closer to the metal to get a more authentic experience.
+Thus, I have chosen C to perform this function. Not only does C allow me greater
+control over how the program may work, but it's simplicity allows for greater
+lateral movement among the platforms. It also greatly increases the speed, and
+removes any dependencies on the users part for any specific runtime e.g python.
+I have also opted for a cli application for the very same reason. Almost as
+important as the code itself, in realizing the needs of the stakeholders would
+be documentation. Furthermore, the primary source of input will be binary. This
+means the opcodes as well as any arguments will be entirely binary as well. The
+logic for this is that it gets students and users a better feel for how
+something might be represented in the computers memory, and therefore they can
+better reason about how a computer operates. The documentation will be extensive for this program and
+include use cases for achieving various concepts someone might want to know if
+they are working in a low level language. Finally I have gone with an
+interpreter as the DSL's (domain specific language) primary form of input. This
+to help with discoverability, i.e the ability for the user to inspect the state
+mid run is crucial to getting an outcome that meets the specifications.

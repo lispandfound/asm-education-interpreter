@@ -1,0 +1,246 @@
+#+TITLE: Brief
+#+AUTHOR: Jake Faulkner
+This brief is for other assessments that go along with this project. It can be
+safely ignored if all you want is the code.
+* Research
+I made research into the area of education in computer science, looking for an
+opportunity to solve a problem in the given area. In particular one area I found
+commonly bought up over and over again was this idea that computer science was a
+dull/abstract subject. There seems to be not only a disconnect between the
+students and the subject, but between the subject and reality. I found it was
+summarized really well on Microsoft Research's article /Socially Relevant
+Computing[fn:1]/:
+#+BEGIN_EXAMPLE
+  Unfairly or not, computer science has gained a reputation among some college
+  students as being a dull and abstract subject. Researchers at the Center for
+  Socially Relevant Computing in New York are working to reverse this perception
+  by promoting computer courses and software design projects that give students
+  the opportunity to make a profound impact on people’s lives.
+#+END_EXAMPLE
+The article talks a lot about /lagging behind the rapidly growing demand for
+qualified professionals in STEM fields/. It attributes this lag to the fact that
+students cannot connect with the subject being taught to them. It's not
+immediately clear why they should care about the functional amortized nature of
+a finger tree, or the application of a trie over a standard tree. This was
+interesting to me, and pointed out that this problem could be helped to be
+solved not just in the social context, with which this article deals with, but
+the theoretical context by applying some theory to a live environment for
+students to work in. It a memory constrained environment it becomes clearer why
+certain algorithms might be used over another, unlike in today's wealth of
+resources. However further on in my research another article[fn:2] , ironically
+criticizing Microsoft, handles a possibly more manageable subset of this larger
+context. Specifically it talks about the "recent" (it's the 2000s) announcement
+of Microsoft's .NET program, and I think this paragraph in particular went a
+long way to identifying a problem I can solve for these students, whom the
+previous article has pointed out are having problems grasping the concepts of
+computer science and staying interested
+#+BEGIN_EXAMPLE
+There are two things going on here. Microsoft has some great thinkers. When
+great thinkers think about problems, they start to see patterns. They look at
+the problem of people sending each other word-processor files, and then they
+look at the problem of people sending each other spreadsheets, and they realize
+that there's a general pattern: sending files. That's one level of abstraction
+already. Then they go up one more level: people send files, but web browsers
+also "send" requests for web pages. Those are both sending operations, so our
+clever thinker invents a new, higher, broader abstraction called messaging, but
+now it's getting really vague and nobody really knows what they're talking about
+any more.
+#+END_EXAMPLE
+Important to this concept is the idea of abstraction being the root of
+misunderstanding. By ascending further up the chain of abstraction it becomes
+less clear how a concept applies in any relevance anymore. Whilst this article
+used abstractions of sending word processing files, this concept can be aptly
+applied anywhere. For example, I took a look at one language that is constantly
+touted as a language to learn with, Python. Python is a good language, when you
+can understand the tower of abstraction you stand on, when you can learn to
+ignore some of the cruft that Python brings with certain styles of programming.
+However in an educational environment it fails to reflect the concepts being
+taught. For instance, learning about the way and size of numbers stored in
+memory is an already vague concept. However when your programming language of
+choice uses arbitrary precision, it can be really hard to understand why a
+computer has the memory restrictions it does. Therefore through research I have
+highlighted the need for a solution that engages with the user, and provides
+them with the ability to understand the concepts that are being taught in the
+computer science class they occupy.
+* Social Environment And Background
+The social needs of program also need to be identified. From a societal
+perspective, there is almost no way to go wrong here. Nobody is likely to be
+offended by the design of this program, as it really asks nothing personal of
+the user or requires the user to interact personally with it. However there is one main
+environmental factor that needs to be accounted for.
+
+- Prior knowledge :: The environment this program is aimed at is those who may
+    have prior knowledge of coding (although possibly not), and those who haven't
+    had much in low level programming. In order to account for this, simple
+    design should be employed to ensure that the user doesn't become swamped with
+    too much information too fast.
+* Stakeholders
+In developing this solution I identified a few stakeholders whose opinions were
+integral to it's success. These stakeholders were the students, and the teacher.
+A more detailed break down (including their needs) is listed below:
+
+
+- Students :: If the ultimate goal of the solution is to show students what
+    programming in a low level environment looks like, then such a program
+    needs two things. Firstly it needs to *emulate* the environment of a low
+    level program, which includes registers, memory management, and common
+    instructions to manipulate them. Secondly, and perhaps more importantly, it
+    needs to *instruct*, *inform* and *educate* the student on what they're actually
+    doing. This can be achieved through documentation of how the program works,
+    including analogies to real world scenarios, and also importantly providing
+    comprehensive feedback on what each instruction they're running is doing.
+- Teacher :: The teacher's needs are related but not identical to that of the
+    student. The teacher's ultimate goal to to educate and inform students on
+    how low level languages generally work. In order to do that a teacher needs
+    a program that is adaptable to any learning environment, and caters for
+    both those who are relatively independant (in that they'll want to do
+    things for themselves to find out), and those who prefer the guidance of a
+    teacher in general. In order for that to be achieved, the program needs to
+    be *flexible*, *discoverable* and *documented*. If the program is flexible, then those who are
+    independant can work on their own, discovering nuance of low level code,
+    whilst those who need it can be taught by the teacher. Moreover for those
+    who do require a teacher's guidance, documentation is important to ensure
+    that any teacher can provide quick example demonstrating low level concepts
+    without quickly and easily. This might be achieved with example programs
+    for each low level concept the outcome is capable of reproducing
+
+Overall, from both teachers and students, I have identified key points from
+feedback to questions asked that need
+to be focused on in order for success to be achieved.
+
+1. Emulation. Without an emulated environment neither documentation nor
+  discoverability will achieve the goal.
+2. Documentation. The program needs to have comprehensive documentation in order
+  for the teacher to teach properly, and the students to understand what
+  they're doing.
+3. Discoverability. Independant students are going to want to learn the ropes
+  themselves. In order for that to be achieved, they are going to need feedback
+  from the program that shows exactly what the program is doing at a given
+  time.
+Additionally, as my perspective as the developer, I have my own values that
+aren't necessarily in the interests of students or teachers, but benefit them
+nonetheless.
+1. Extensibility. The code base needs to be able to be extended quickly and
+  easily, through abstracted details and standardized interfaces.
+2. Foolproof Code. The code needs to be able to withstand any input, as this
+  kind of project relies heavily on user input, I cannot be sure what they'll
+  enter. Thus I need an easy way of showing that the code I write will work in
+  all cases.
+3. Simplicity. Almost as a requirement of the previous two, the code needs to
+  remain simple and require little to no dependencies bar a standard library.
+4. Cross Platform. The code needs to be able to be compiled for Windows, Mac OS
+  X, and Linux in simple steps. Provided the code base is simple, and projects
+  like mingw do their job, this should be easy to carry out.
+
+* Stakeholder Opinions
+I Considered stakeholer's opinions multiple times through out the course of
+developing the outcome.
+** Teacher
+
+** Students
+When I presented some fellow students in my class (who are the target audience
+here) with a few design related questions about the program. For emulation of
+what might actually occur in a classroom situation I also provided them with a
+table of opcodes that they could refer to if need be. The questions were as
+follows:
+
+1. Is it easy enough to use the program? why?
+2. Is the output the program gives you reasonable? why?
+3. Did you feel the program was responsive to your input, by this I mean was it
+   easy to work out how to solve a problem in this language? why?
+
+I received feedback that has influenced the design of program and it's
+surrounding components.
+
+- The simple table of opcodes wasn't enough for them to get started :: I quickly
+     found a common theme among all the stakeholders, which was they needed help
+     getting started on where to go with the mini language. This is where the
+     idea for good documentation spawned, out of the need to get students who
+     may not have me around to teach them how to get started. The most blatant
+     example was one student who said
+     #+BEGIN_QUOTE
+     How do I work this? I can't tell what to do
+     #+END_QUOTE
+     or when I showed them me working on it
+     #+BEGIN_QUOTE
+     Are you trying tall the ways you can arrange the number 16 in binary?
+     #+END_QUOTE
+- Interpreter is the way to go :: I originally had a plan for file execution,
+     which while never coded was suggested to a couple of students. I abandoned
+     this idea when I realized it would require access to Command Prompt, which
+     is disabled, or Powershell, which no one knew how to use bar a few of the
+     students. Thus I opted for the interpreted method.
+- Feedback was needed :: Feedback was needed for students to have any idea of
+     what they're doing. By feedback I meant the interpreter told you a result
+     of it's execution. This was not in the earliest version of the program, and
+     based off feedback I added it in.
+
+* Proposed Outcome
+In Response to the needs outlined by the stakeholders, as well as the Social
+Environment and Background presented, supplemented with prior research, I have
+developed an outcome to meet them. This outcome, in the form of a program, will
+be a text interface driven program. It will attempt to emulate the types of
+concepts a low level programmer might experience (e.g memory, integer
+over/underflow, registers and low level verbosity), as well as providing
+flexibility for the developer to maintain. It's primary development goals will
+be to be fast, error free, and cross platform. From a users perspective,
+documentation, emulation and discoverability will be the primary goals. This
+outcome should be developed as a huge problem for people first coming into the
+industry and learning to program is that they start with something like Python,
+which abstracts a lot of ideas away. This invariably leads to programmers who
+don't understand the mountain they stand on while writing code. As a result they
+are frivolous with memory (i.e not optimizing for memory usage), or they don't
+understand more nuanced bugs related to it's C underpinnings. I
+think programs like the one I intend to develop will help the user understand
+the abstractions they rely on when writing languages like python, and perhaps learn to be a little
+more careful about how they write code.
+* Physical and Functional Components
+Based of the stakeholder considerations, as well as my own, I have created a
+functional and physical components list. In order to tackle emulation, I need to
+use a programming language that is closer to the metal to get a more authentic experience.
+Thus, I have chosen C to perform this function. Not only does C allow me greater
+control over how the program may work, but it's simplicity allows for greater
+lateral movement among the platforms. It also greatly increases the speed, and
+removes any dependencies on the users part for any specific runtime e.g python.
+I have also opted for a cli application for the very same reason. Almost as
+important as the code itself, in realizing the needs of the stakeholders would
+be documentation. Furthermore, the primary source of input will be binary. This
+means the opcodes as well as any arguments will be entirely binary as well. The
+logic for this is that it gets students and users a better feel for how
+something might be represented in the computers memory, and therefore they can
+better reason about how a computer operates. The documentation will be extensive for this program and
+include use cases for achieving various concepts someone might want to know if
+they are working in a low level language. Finally I have gone with an
+interpreter as the DSL's (domain specific language) primary form of input. This
+to help with discoverability, i.e the ability for the user to inspect the state
+mid run is crucial to getting an outcome that meets the specifications. The code
+will be split into two functional portions, the library and the front end
+interpreter. I did this to increase the extensibility and portability of the
+code in general. If the internal logic is split away from the actual front end
+interpreter, then it becomes a lot easier to make the internal logic portable,
+whilst the front end OS specific. It also allows for moduality, and this
+increase the extensibility by parts to be removed and changed within the logic
+more freely, now not having many upstream dependencies on the interpreter
+itself. Finally I will take advantage of the C preprocessor to allow lateral
+movement among platforms, in particular by only compiling code relevant to the
+platform it's being compiled on.
+
+- Specifications ::
+  - Emulates the a low level computing environment to allow students to learn
+    low level concepts
+  - Allows students to discover these concepts on their own, through their own
+    intuition
+  - Has documentation that allows for the student to grasp concepts and the
+    basics of the language easily and without too much involvement from a
+    teacher needed.
+  - Is extendable and scale-able beyond initial release to accommodate for missing
+    functionality or new concepts that arise in the wild
+  - The code doesn't trip or fail on incorrect data input. The code must be able
+    to accept incorrect input and handle it properly without failing, and
+    letting the student know what they entered wrong.
+  - The code must be simple enough that it is able to be used with little
+    prerequisites beyond a standard library and a compiler
+  - The code must be able to compile on multiple computers and operating systems
+    without fuss or worry.
+[fn:1] http://research.microsoft.com/en-us/collaboration/focus/cs/src_solveproblems.aspx
+[fn:2] http://www.joelonsoftware.com/articles/fog0000000049.html

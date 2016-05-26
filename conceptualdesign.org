@@ -1,0 +1,300 @@
+#+TITLE: Conceptual Design
+#+AUTHOR: Jake Faulkner
+* Research
+In developing the program, a number of design decisions are needed to be made
+in order to develop a working product.
+** Audience
+As the primary stakeholders for the program are mainly students, the program
+needs to be tended towards them in order to ensure that they can use the
+program effectively.
+
+In order to learn what sorts of elements I needed for this program I looked at
+other educational assemblies that predate my project and collected notes based
+on what I thought I could incorporate:
+
+- Little Man Computer
+[[https://en.wikipedia.org/wiki/Little_man_computer][Wikipedia Page]]. Little Man Computer is an educational base-10 executable code
+or assembly language designed to emulate the basics of a modern computer.
+The language is capable of control flow, arithmetic, basic IO and stored
+memory. From here I took the concepts of stored memory, which I wasn't
+planning on doing originally, because in studying the[[https://en.wikipedia.org/wiki/Von_Neumann_architecture][ Von Neumann Architecture]]
+I realized that the concepts of memory management are an important concept for
+students learning about lower level languages to grasp. Often in higher level
+languages that are commonly used for teaching (e.g python, javascript, ruby)
+understanding that memory is a physical thing they can write to is something
+that is rather important. This is particularly when programmers in real life face heap
+and stack errors it's important to understand that memory is finite, as well
+as how and where you would choose to write to memory in general.
+- Crunch
+[[http://codio.com/docs/teacher/special/crunch/][Crunch by codio]] is offered as a modern alternative to Little Man Computer.
+Crunch features a far more complex view of the CPU and instructional
+programming than Little Man Computer does. For example, as far as my research
+can tell me, Little Man Computer features no concept of a stack. Crunch
+however does feature a stack, which can be pushed and popped from as you would
+expect. Crunch is also modelled more closely with actual modern assembly than
+Little Man Computer is which inevitably means it carries a lot of the tradition
+that assembly does as well (e.g JMP for jumping to a label). From here I took
+the prompt (being a simple ">"), which while I thought was a little too vague
+as an input guider I realized could be used provided enough documentation was
+included.
+*** Screenshots
+[[file:screenshots/img-2016-05-07-104937.png][Crunch By Codio]]
+Example output from Little Man Computer when inputted a file with the lispish expression =(+ 1
+1)= when run with the arguments =lmc-lisp -i test.lmc -A=
+#+BEGIN_EXAMPLE
+lda 99
+add 99
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+hlt
+data 01
+
+#+END_EXAMPLE
+As you can see it's written in an assembly language (though not one you'd
+recognize).
+* Social Environment And Background
+The social needs of program also need to be identified. From a societal
+perspective, there is almost no way to go wrong here. Nobody is likely to be
+offended by the design of this program, as it really asks nothing personal of
+the user or requires the user to interact personally with it. However there is one main
+environmental factor that needs to be accounted for.
+
+- Prior knowledge :: The environment this program is aimed at is those who may
+    have prior knowledge of coding (although possibly not), and those who haven't
+    had much in low level programming. In order to account for this, simple
+    design should be employed to ensure that the user doesn't become swamped with
+    too much information too fast.
+* Sketches, designs and Initial Ideas
+I initially had the idea to create a program that was more a compiled language
+than an interpreted one. In this instance users would write to files and then
+run the "compiler" (it just interpreted the file line by line really), and
+output where the user specified. After watching students working in
+class, I decided against this. The expectation seemed to be for an interpreter
+like the Python IDLE. This as I came to realize was mostly a workflow thing. The
+students wanted to be able to input text and then have an output displayed for
+them immediately. The movement between editor and command line was jarring and
+required a lot of prior knowledge about command line flags and what they did
+(most didn't even know the convention of the "-h" or "--help" flags for getting
+help, usually "/h" on windows systems).
+
+After researching into prior programs created for this area, I designed the way
+my own program would run from a design standpoint. I knew that in the interest
+of time it would have to be a console program (because otherwise dependency hell
+would make it hard to develop for multiple platforms). As this was an
+interpreted program it would need and interactive step by step feedback from the
+user. So I first worked on a
+prompt[fn:1]. The prompt I felt needed to reflect traditional prompts (e.g sh's "$",
+or cmd's ">"). I tested the some common command line prompts used by other
+programs with stakeholders (sh's "$", cmd's ">", and fish's "~>"). The stakeholder's seemed to prefer cmd's ">", because cmd was something they had at
+least seen before in some capacity. Even the ones who hadn't seen cmd before recognized it as a
+prompt they needed to put something into. I could have
+very easily picked a more descriptive prompt like "Please input valid foolang
+syntax". But this I chose against, mostly due to the fact that this kind of
+prompt doesn't help the user input any valid foolang syntax, and that if you
+were writing a lot of code it could become very cluttered as an interface very
+quickly. I decided that this kind of explanation was pointless provided
+documentation on how to use the program was given for the user. In the end I chose a ">" because I thought it immediately felt to
+me more like a prompt asking for input. The returned output was also needed
+design. After consulting with my stakeholders about the need for feedback from
+the interpreter, I took a look at what kind of prompt would signify feedback. In
+the end I chose "->" followed by the output to represent a returned value.
+"Output:" Could also have been used here, but the consistency of the ">" was
+more important in this instance than the straight forward "Output:" that was
+being displayed. Putting this together we get an example input/output session
+like so:
+#+BEGIN_EXAMPLE
+> 1111 0000 1111 0000
+
+-> 12
+#+END_EXAMPLE
+Another important aspect of the design was the syntax of the language itself.
+Importantly I felt it was necessary to enforce short lines, with multiple
+frequent breaks for clarity. This was especially pertinent when you consider
+that the language would be inputted in binary, rather than English. For example
+"01000001" is very long, and hard to parse to average human eye. By breaking this
+4 bit sections "0100 0001", it is much easier to parse. Similarly it was
+important that the semantics of the language remained consistent for a large
+majority of the time. In the end I settled on one simple rule for the semantic
+aspect of the language, generally speaking every line should look like this:
+#+BEGIN_EXAMPLE
+INSTRUCTION ARG1 ARG2 ARG3
+#+END_EXAMPLE
+so this might look practically like
+#+BEGIN_EXAMPLE
+0001 0000 0001 0000
+#+END_EXAMPLE
+This might represent (assuming that =0001= corresponds to the ADD instruction) ADD
+the value of register 0 (0000) to the value of register 1 (0001). Notice the
+last argument (ARG3) is ignored but required nonetheless. I chose this style
+because it more closely represents an English way of parsing the values.
+** Language Choice
+I chose to develop this program in C, because C gave me not only the functions
+and arrays, etc, that a general purpose programming language provides, but also
+access to memory and the ability to specify shorter integers (e.g creating an 8
+bit integer rather than a standard one) that I would need for this kind of
+program. This is especially useful if you wish to replicate integer overflow and
+underflow in unsigned integers.
+
+** Functional Flow
+I constructed the following flow diagram for how the program might operate
+#+CAPTION: Control Flow Diagram
+#+NAME: fig:1
+[[/media/jake/Files/repos/c/asminterpreter/programflowdiagram.png]]
+My stakeholders, couldn't really provide any commentary on how the program might
+operate. This is understandable, it can be a bit hard for the user (especially
+one with little knowledge of how low level code works to comment on a particular
+programs effectiveness at it's job. As such there really wasn't any changes that
+needed to be made in terms of the functional aspects of this program.
+Notably here is the separation of the interpreter and the core logic. I will
+attempt to partition this into two sections, the interpreter and the library
+behind it all. Through this I can abstract all the irrelevant details of the
+Operating System into the interpreter, leaving the library to deal with core
+logic increasing overall portability.
+** Testing
+I intend to code in a test driven manner, writing failing tests for code and
+writing an implementation to fit those tests later. This helps me focus on what
+really needs to occur in the code, by making me think about all the edge cases
+and poor design choices earlier rather than later. The tests will remain in the
+program for the entire duration since a features initial implementation. Working
+in this manner allows me to validate that all the features as intended even if I
+change something core, like the way binary is parsed by the system. This will be
+automated so I can take advantage of tools like Travis CI for testing my code.
+Due to this automation requirement, the interpreter front end won't be tested
+this way. This is acceptable to me because the code for the front end isn't
+particularly complex in any case, and is easily testable for problems without
+too much effort on my part.
+
+- UPDATE :: You can see evidence of testing in the file "main.c" inside the
+     "test" folder.
+* Final Design
+In finale, I have created a program whose input output scheme is reminiscent of
+Window's Command Prompt's design. It is a very simple interpreted language run
+line by line with interactive feedback provided to the user as they run (the
+stakeholder's indicated favourite aspects of the Python IDLE). Borrowing
+elements of the Von Neumann architecture in the Little Man Computer project,
+this program will attempt to emulate the core elements of a computer including
+memory, integer overflow etc. Functionally the program will be a modular,
+testable system by separating the code logic from the operating system local
+interpreter code. Overall I will attempt to create a functional program that
+fits the requirements for fitness of purpose as outlined by the stakeholders.
+* Fitness for purpose
+I believe that this outcome has fitness for purpose in the context of what the
+stakeholders have requested and what the design has become. The requirements for
+this program, as outlined by the brief, were that the program achieved
+Emulation, Documentation, Discoverability, Extensibility, Foolproof Code,
+Simplicity and Cross Platform targets. I believe that all of these targets made
+by the stakeholders were reached.
+- Emulation :: The program being written in C will be as close to the metal as
+     it can feasibly get. I will be able through this to simulate many important
+     concepts, such as integer over/underflow (using 8 bit C integers), memory
+     management and function (using actual pointers to actual locations in
+     memory, and manipulated as such) and how primitive assembly code might be
+     represented.
+- Documentation :: The documentation for this program will be provided through
+     the programs mentality, that documentation is regarded as a feature of the
+     program rather than a consequence of it's complexity. This means that
+     documentation will be prioritized as any feature (like increased memory
+     table sizes for instances) might be in turn.
+* Footnotes
+
+[fn:1] A prompt in this case refers to a common practise for shells like Command
+Prompt to display a simple character, and maybe a little more information about
+the users current directory etc. For example in Windows Command Prompt, the
+prompt is a ">" with directory information prefixed e.g
+#+BEGIN_EXAMPLE
+C:\WINDOWS>
+#+END_EXAMPLE

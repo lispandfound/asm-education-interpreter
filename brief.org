@@ -1,10 +1,12 @@
 #+TITLE: Brief
 #+AUTHOR: Jake Faulkner
-This brief is for other assessments that go along with this project. It can be
-safely ignored if all you want is the code.
-* Research
-I made research into the area of education in computer science, looking for an
-opportunity to solve a problem in the given area. In particular one area I found
+* Background
+For this assessment, I chose to look into the area of education in computer
+science, as I am very interested in teaching a generation of new students to
+enjoy computer science as much as I have.
+** Research
+I began by making research into the area of education in computer science, looking for an
+opportunity to solve a problem. One particular one point I found
 commonly bought up over and over again was this idea that computer science was a
 dull/abstract subject. There seems to be not only a disconnect between the
 students and the subject, but between the subject and reality. I found it was
@@ -46,6 +48,40 @@ clever thinker invents a new, higher, broader abstraction called messaging, but
 now it's getting really vague and nobody really knows what they're talking about
 any more.
 #+END_EXAMPLE
+So this bought up a lot of concepts that seem very hard to understand, however
+the core principals remain the same. The author argues that a huge problem in
+teaching computer science is that what is being taught is so far away from the
+computer that it becomes hard to see it's relevance anymore. The modern computer
+and modern programming languages are use technical terms that hide so many
+details that students cannot make the connection between the code they write and
+what the computer runs. In other words I suppose, code is still magic to those
+who think they can write it.
+** Highlighted Needs
+Following on from this research, I have concluded that in my area of research
+(education in computer science) there is a particular need that needs to be
+addressed. That need, as pointed out by the research is that people *need a
+program that shows them how a computer works*. They need a program that *allows
+people to interact with the lowest level computers* in order *to understand what
+it is a computer does, and why it does it*. Therefore I have decided to develop
+*a program that allows the user to input code similar to what a real computer
+might read* so that users can *reconnect theory with practice* and therefore
+understand and possibly enjoy the subject better.
+
+In particular what I refer by user here is a student in the computer science
+area. From my own personal experience, I feel that this disconnect between the
+computer and code happens largely when I started programming, therefore I have
+chosen to target *Year 11 Computer Science Students* as this is probably the first
+time they will be interacting with code or computer science concepts
+
+This program will be an interpreter (essentially a computer language translator)
+that converts the student's code into executable machine code. The student's
+code will allow for many concepts that the research highlighted students missed
+(such as memory management and how numbers are stored on a computer) to be
+expressed in such a way that they are more understandable and that the student
+can make the connection between the code they write and what the computer
+actually does.
+
+
 Important to this concept is the idea of abstraction being the root of
 misunderstanding. By ascending further up the chain of abstraction it becomes
 less clear how a concept applies in any relevance anymore. Whilst this article
@@ -63,17 +99,20 @@ highlighted the need for a solution that engages with the user, and provides
 them with the ability to understand the concepts that are being taught in the
 computer science class they occupy.
 * Social Environment And Background
-The social needs of program also need to be identified. From a societal
-perspective, there is almost no way to go wrong here. Nobody is likely to be
-offended by the design of this program, as it really asks nothing personal of
-the user or requires the user to interact personally with it. However there is one main
-environmental factor that needs to be accounted for.
+Because my area of research was education in computer science, and as my target
+audience is Year 11 computer science students, I needed to consider what Social
+Environment they would be in. From a societal perspective, there is almost no
+way to go wrong here. As my program is literally just allows users to input code
+like what a real computer might read, nobody is likely to be offended by the design of this
+program, as it really asks nothing personal of the user or requires the user to
+interact personally with it. However there is one main environmental (non social) factor that
+needs to be accounted for.
 
 - Prior knowledge :: The environment this program is aimed at is those who may
     have prior knowledge of coding (although possibly not), and those who haven't
-    had much in low level programming. In order to account for this, simple
+    had much in low level (close the computer) programming. In order to account for this, simple
     design should be employed to ensure that the user doesn't become swamped with
-    too much information too fast.
+    too much (or too little) information too fast.
 * Stakeholders
 In developing this solution I identified a few stakeholders whose opinions were
 integral to it's success. These stakeholders were the students, and the teacher.
@@ -242,9 +281,12 @@ platform it's being compiled on.
   - Has documentation that allows for the student to grasp concepts and the
     basics of the language easily and without too much involvement from a
     teacher needed.
-  - Is extendable and scale-able beyond initial release to accommodate for missing
-    functionality or new concepts that arise in the wild
-  - The code doesn't trip or fail on incorrect data input. The code must be able
+  - Is extendable and scaleable (that is the program can adapt to changes and or
+    increase in demand) beyond initial release to accommodate for missing
+    functionality or new concepts that arise in the chosen setting (the
+    classroom environment).
+  - The code (the code that I write to make the interpreter, not the interpreter
+    code itself) doesn't trip or fail on incorrect data input. The code must be able
     to accept incorrect input and handle it properly without failing, and
     letting the student know what they entered wrong.
   - The code must be simple enough that it is able to be used with little

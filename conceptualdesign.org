@@ -171,7 +171,17 @@ required a lot of prior knowledge about command line flags and what they did
 (most didn't even know the convention of the "-h" or "--help" flags for getting
 help, usually "/h" on windows systems).
 
-After researching into prior programs created for this area, I designed the way
+After researching into prior programs created for this area, I consulted the
+stakeholders about the development of the prompt for the interpreter.
+
+Question:
+[[file:~/Pictures/Screenshots/img-2016-06-30-165907.png]]
+
+A sample of the responses
+*S2 (stakeholder 2)*
+[[file:~/Pictures/Screenshots/img-2016-06-30-170331.png]]
+
+ I designed the way
 stakeholder's seemed to prefer cmd's ">", because cmd was something they had at
 my own program would run from a design standpoint. I knew that in the interest
 of time it would have to be a console program (because otherwise dependency hell
@@ -225,7 +235,7 @@ last argument (ARG3) is ignored but required nonetheless. I chose this style
 because it more closely represents an English way of parsing the values.
 The same sentiment was expressed across the stakeholders I asked. Nearly all the
 stakeholders preferred the broken up language than one long string (or as one
-referred to this long string as /hacker mumbo jumbo/).
+stakeholder, #3, referred it to as "/hacker mumbo jumbo/").
 ** Language Choice
 I chose to develop this program in C, because C gave me not only the functions
 and arrays, etc, that a general purpose programming language provides, but also

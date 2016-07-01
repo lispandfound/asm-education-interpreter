@@ -197,6 +197,17 @@ follows:
 3. Did you feel the program was responsive to your input, by this I mean was it
    easy to work out how to solve a problem in this language? why?
 
+You can see evidence of the sending, and of feedback below (note I have blurred
+the names and profiles of those in question, as this brief exists on a public
+forum they cannot be identified)
+
+[[file:~/Pictures/Screenshots/img-2016-06-29-164448.png]]
+Some feedback:
+[[file:~/Pictures/Screenshots/img-2016-06-29-165345.png]]
+
+However verbal feedback was collected on April 13th as well, which is placed in
+quote blocks below
+
 I received feedback that has influenced the design of program and it's
 surrounding components.
 
@@ -205,13 +216,16 @@ surrounding components.
      getting started on where to go with the mini language. This is where the
      idea for good documentation spawned, out of the need to get students who
      may not have me around to teach them how to get started. The most blatant
-     example was one student who said
+     example was one student (who can be identified as Stakeholder 1 or S1) who said
+
      #+BEGIN_QUOTE
      How do I work this? I can't tell what to do
      #+END_QUOTE
-     or when I showed them me working on it
+
+     or when I showed S1 how it works
+
      #+BEGIN_QUOTE
-     Are you trying tall the ways you can arrange the number 16 in binary?
+     Are you trying all the ways you can arrange the number 16 in binary?
      #+END_QUOTE
 - Interpreter is the way to go :: I originally had a plan for file execution,
      which while never coded was suggested to a couple of students. I abandoned
@@ -220,8 +234,12 @@ surrounding components.
      students. Thus I opted for the interpreted method.
 - Feedback was needed :: Feedback was needed for students to have any idea of
      what they're doing. By feedback I meant the interpreter told you a result
-     of it's execution. This was not in the earliest version of the program, and
-     based off feedback I added it in.
+     of it's execution. This came as a result of my second stakeholder (S2) who said
+    #+BEGIN_QUOTE
+So, what did I just do?
+    #+END_QUOTE
+
+    This was not in the earliest version of the program, and based off feedback I added it in.
 
 * Proposed Outcome
 In Response to the needs outlined by the stakeholders, as well as the Social
